@@ -1,1 +1,2 @@
 Versi 1 - Belajar Git
+Versi 2 - Perubahan pertama
