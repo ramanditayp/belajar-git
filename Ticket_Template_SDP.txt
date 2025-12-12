@@ -1,0 +1,3366 @@
+
+*Meeting dgn Risyad : 18/Apr/2024*
+Risky User Activities : report
+
+MOM : 
+1. Penambahan kolom status remark : diambil dari additional details
+2. Untuk user yg di FU hanya yg sign in dari aplikasi yg ada pada conditional access
+3. Pada kolom Follow Up dikasih informasi detail apakah tidak ada jawaban atas reason reset password dll
+4. untuk user yg statusnya success maximal 24 jam harus langsung di reset password bila tidak ada jawaban / FU dari user ybs
+
+Untuk user yg sign in dari luar negeri perlu dicek juga dgn SOC apakah pakai VPN atau tools tertentu
+
+====================================================================================================================
+
+Completed at next backup log job : expected if log backup job is failed or not completed between 11.30 PM until 06.00 AM, because eleavate server SAP HANA is scheduled for poweroff at that time everyday. 
+
+misal ada alert backup failed sml1lsb4d01 & sml1lsb4q01 bila malam hari , expected karena schedule vm on/off
+
+-Onhold : -
+-RCA : Expected dikarenakan ada schedule poweroff server HANA Elevate di Azure setiap hari antara pkl 23.30 s/d 06.00 pagi , dan juga schedule poweroff setiap weekend diantara periode tersebut akan ada log backup yg not available & akan running setelah vm power on.
+-Action : Monitor next backup log job.
+
+Onhold : -
+RCA : Tenant DB HLD di nonattifkan info PIC
+ACtion : Monitor backup for other tenant H2D & SYSTEMDB
+
+-Onhold : -
+-RCA : VMWare failed remove & creating temporary snapshot by VEEAM
+-Action : kill active process in vm / vcenter cli & remove active snapshot in snapshot manager vcenter for regarding VM.
+
+-ONHOLD : -
+-RCA : Risky User Activity detected from Foreign ip address
+-Action : RESET PASSWORD , NO RESPONSE FROM USER AFTER 3 Hrs EMAIL by ITSM.
+
+-Onhold : -
+-RCA : Expected dikarenakan VM CA lama (10.200.56.18 & 10.200.56.24) sudah di upgrade / migrate ke VM CA Baru (10.200.56.160 & 10.200.56.161).
+-Action : Info ke NOC untuk Penyesuaian di monitoring alert NOC / OPM.
+
+-Onhold : -
+-RCA : Request User for Reset MFA via ITSM
+-Action : Reset MFA (Require re-register MFA) in Entra
+
+-Onhold : -
+-RCA : Probable device failure: No response from device for last 2 polls Device: SMLHPSCP002
+-Action : Next pooling running & normal
+
+-Onhold : -
+-RCA : Request User for add user in Entra Apps SAP C4C Production
+-Action : Register or add users in Entra Apps SAP C4C Production
+
+-Onhold : -
+-RCA : ada temuan terkait vulnerability CVE untuk update vmware tools ke latest / versi 12.5.3.
+-Action : Install / upgrade vmware tools di server server onpremise ke versi 12.5.3 / latest.
+
+-Onhold : -
+-RCA : Request ITSM untuk reset password dikarenakan ITSM tidak ada akses
+-Action : Reset Password di AD Onprem
+
+-Onhold : -
+-RCA : Request ITSM untuk Unlock user AD dikarenakan ITSM tidak ada akses
+-Action : Unlock user AD in ADUC
+
+-Onhold : -
+-RCA : Permintaan Pak Risyad untuk create CSR untuk pembuatan / perpanjangan SSL Wildcard Cert public *.sinarmasland.com
+-Action : Create CSR sesuai naming *.sinarmasland.com
+
+-Onhold : -
+-RCA : -
+-Action : Create Materi monthly report backup , risk user & appendix bulan Agustus 2025 Done.
+
+-Onhold : -
+-RCA : User AD terlock 
+-Action : Trace user locked via event viewer untuk melihat user terlocked dari perangkat / hostname apa.
+
+-Onhold : -
+-RCA : Hostname Exist when join domain hostname
+-Action : Remove hostname on AD hostname : Legal-pgwsby
+
+-Onhold : -
+-RCA : Kebutuhan untuk akses shared folder/printer after penerapan security baseline GPO AD revamp
+-Action : Move hostname keluar OU Tier2 
+
+-Onhold : -
+-RCA : User masuk dalam list Risky Users / Risky Sign in microsoft Entra
+-Action : 1. FollowUp / Kirim email ke ITSM
+          2. ITSM Forward ke User / PIC akun
+		  3. Menunggu Follow up dari sisi user dengan maksimum respon tidak boleh lebih dari 3 Jam
+		  4. Melakukan Reset Password & Revoke session bila user konfirmasi bahwa aktivitas tidak legitimate maupun bila tidak ada respon > 3 jam setelah email.
+
+-Onhold : -
+-RCA : -
+-Action : Trace email from sender: agustinus.djuwardi To recipient: itsm@sinarmasland from 1-31/July/2025 
+
+-Onhold : -
+-RCA : -
+-Action : Pengecekan type mailbox di Exchange admin centre (UserMailBox or SharedMailBox)
+
+-Onhold : -
+-RCA : -
+-Action : Pengecekan user mailbox exist di Exchange admin centre (UserMailBox or SharedMailBox)
+
+-Onhold : -
+-RCA : VM Sudah dismantle atau deleted sehingga bisa diremove dari veeam backup untuk mereduce license veeam.
+-Action : Remove from backup policy/job & revoke veeam license per vm yang sudah di remove dari backup.
+
+-Onhold : -
+-RCA : VM Baru yang dicreate dan belum dibackup di Veeam
+-Action : Add to Policy/Job backup di Veeam VBR/VBA
+
+-Onhold : -
+-RCA : Critical - SMLCVBMP03 - Disk Utilization is 95%, threshold value for this monitor is 90%
+-Action : Hasil pengecekan dengan RDP langsung dan cek di Windows Explorer untuk drive C & D terpantau belum mencapai 90%
+
+-Onhold : -
+-RCA : SMLNINETWFDB01 - ITDR --> C:\\Program Files\\Carbonite ( directory ) Error : [Error # Script execution time was exceeded for the host]
+-Action : Next pooling running & normal
+
+-Onhold : -
+-RCA : Request restore database mysql  SMLWEBDBP01 - New per restore point 15/Aug/2025
+-Action : restore FLR (File Level Recovery) file database strapi_production from path /var/lib/mysql/strapi_production , per restore point 15/Aug/2025
+
+
+-Onhold : -
+-RCA : -
+-Action : Trace email user From Sender: tryas.kartiko@sinarmasland.com To Recipient: kousoku_akihiro@star.sfc.co.jp (Delivered 20/Aug/2025).
+
+Veeam OnPremise
+Azure/Blob Storage
+
+-Onhold : -
+-RCA : Veeam mencoba melakukan backup, namun terdapat snapshot lama yang bisa memperlambat atau mengganggu proses metadata collection saat disk-nya fragmented atau storage-nya sibuk.
+-Action : delete old snapshot manua lalu restart OS.
+
+-Onhold : -
+-RCA : ITSM need to add user to member of Remote Desktop, usually add from user local admnistrator , the issue is local administrator has been locked.
+-Action : Unlock local admnistrator by Sysadmin teams.
+
+-Onhold : -
+-RCA : -
+-Action : Check user's groups member (Administrator groups or not) 
+
+-Onhold : -
+-RCA : Failed Backup - Backup Credential Expired.
+-Action : Running Full backup SAP HANA Plugin for R3CID01 (SYSTEMDB & TENANTDB) - Success
+
+-Onhold : -
+-RCA : -
+-Action : Running Task Restore Instance/VM  SMLWEBDBP01 - New per restore point 14/Aug/2025 (Restore to AWS with different name)
+
+
+Summary : Set Schedule Backup Weekly untuk SML Compliance backup di Veeam AWS 
+Action : Exclude Backup Daily , Sesuaikan jam backup Weekly , Remove Exclusion bila backup weekly sudah done
+Result : Backup Weekly completed.
+
+
+Summary : Expected dikarenakan ada schedule poweroff server HANA Elevate di Azure setiap hari antara pkl 23.30 s/d 06.00 pagi , dan juga schedule poweroff setiap weekend diantara periode tersebut akan ada log backup yg not available & akan running setelah vm power on.
+Action : Monitor next backup log job.
+Result : After Server UP , log backup is success.
+
+Summary : Failed backup Tenantdb HLD BECAUSE is inactive info from PIC
+Action : Skip from monitoring backup tenant (HLD), monitoring other tenant db (H2D)
+Result : Expected dikarenakan Tenantdb HLD is inactive info dari PIC
+
+Summary : Failed backup log PCCIDV1-H33-SYSTEMDB Log Backup impact of activity restart VBR Server
+Action : Monitoring next backup log HANA (Systemdb & Tenantdb)
+Result : Next Backup log HANA is Success / Completed
+
+Summary : Request for check Ms Project Plan license for user Christian Dharmawirja
+Action : Check on the Entra Users portal for license assign
+Result : Ms Project Plan license not assigned
+
+Summary : Request for add sso SAP C4C
+Action : Add 3 users to sso SAP C4C ABDUL.MUIS@SINARMASLAND.COM,NUROHMAN.NUROHMAN@SINARMASLAND.COM,FITRIATUL.AINI@SINARMASLAND.COM
+Result : Add SSO SAP C4C Done
+
+Summary : Support tim PSI for check event log forwarding AD to Sentinel (server collector Log) for issue send collector log event findings from AD to Collecter server.
+Action : Remote to AD1 , AD2 , Collector server SML
+Result : After requery , the log event viewer AD has been sent to server collector SMLMSADLOGERAP1
+
+*Task Template*
+Reset MFA User :
+Open Entra Admin portal > find user then > reset from menu Require re-register MFA > MFA has been reset
+
+Summary : Reset MFA User 
+Action : Open Entra Admin portal , find user then reset from menu Require re-register MFA
+Result : MFA has been reset
+
+
+Summary : Remove Hostname for rejoin domain AD sinarmasland.net
+Action : Remove Hostname (Computer) as request on Active Directory Users and Computers
+Result : Computer has been remove from ADUC
+
+Task : Remove Hostname for rejoin domain AD sinarmasland.net
+Description : 
+1. Open Server AD (ADUC)
+2. Find Computer / Hostname (ADUC)
+3. Delete Computer / hostname per request
+
+
+Summary : Mayoritas Backup job Veeam VBA AWS failed karena disk IOPS tinggi 
+Action : Retry job job veeam backup AWS yang failed karena IOPS VBA AWS tinggi.
+Result : After retry job running, backup job is success.
+
+*Task Template*
+Monitoring backup job / log Veeam
+Descr : Monitoring backup sap hana plugin job & log
+
+Summary : Failed backup HANA server Elevate dikarenakan schedule poweroff every night & weekend
+Action : Monitoring next backup log HANA (Systemdb & Tenantdb)
+Result : Expected dikarenakan ada schedule poweroff daily setiap malam & weekend untuk server Elevate BPC QA & DEV (sml1lsb4dbq01 & sml1lsb4dbD01).
+
+Summary : Failed Backup HANA DB server R3CID03 tenant HLD
+Action : -
+Result : Expected karena info terkhir dari PIC Server untuk tenantdb HLD inactive , untuk systemdb & tenantdb H2D terpantua success backup.
+
+Summary : Failed Backup HANA DB Job R3CIV01 (H1P) Systemdb & Tenantdb 
+Action : Troubleshooting issue backup veeam plugin HANA on server H1P R3CIV01 :
+1. Raise Ticket to Veeam Support
+2. Remote session with veeam support engineer
+3. Raise the severity ticket on veeam portal for next troubleshoot
+4 Grep log and send to veeam engineer for analyze
+5. Crete New job & Running Full Backup HANA DB (New Job Backup is successfull)
+Result : After create New job HANA DB Backup , the result backup is successfull
+
+Summary : 
+Running Backup CopyRunning Backup Copy Backup Commvault from storage AWS/S3 Bucket to Offsite storage Azure/Blob for last full backup September 2025 , untuk compliance backup offsite.
+Action : Running Auxiliary copy job on commvault , Source : job-job yang ada di Repo AWS/S3 target to Azure Blob
+Result : Backup Copy Success & retain for 2 months​
+
+
+Summary : Create Report Monthly Backup Appendix (Backup Onsite Commvault) periode September 2025
+Action : Create based on Commvault / Veeam One / Veeam VBR & VBA Sessions History 
+Result : Report Backup for monthly backup report appendix has been done
+Task : Create Report Monthly Backup Appendix 
+Create based on Commvault / Veeam One / Veeam VBR & VBA Sessions History
+Filter based on month periode or last month
+
+Summary :Troubleshooting & open ticket to Veeam Support terkait failed backup job Veeam VBA Azure store to Weekly Repo :
+Action :
+1. Raise Ticket to Veeam Support
+2. Grep log and send to veeam engineer for analyze
+3. Update Patch Veeam VBA Azure
+4. Install Hostfix Veeam VBA Azure
+5. Set Schedule Backup Weekly to Repo Weekly
+6. Monitoring Running schedule Backup
+Result : Some Backup has been completed with overlapping backup job.
+
+
+
+
+
+
+*Task Template Sysadmin:*
+
+*Title :* Register user to SSO SAP C4C Production
+
+*Description :*
+Register user to SSO SAP C4C Production :
+1. Open Microsoft Azure/Entra Admin
+2. Find Enterprise Application : SAP CLoud for customer Production
+3. Add user :
+4. Email to ITSM ,that the user has been add to SSO SAP Cloud for custmer Production
+
+*Group :* ID-SML-Sysadmin
+
+*Owner :*
+
+*Priority :* 4
+
+*Task Type :* Regular Daily Operation
+
+Summary : Permintaan untuk register email di Azure AD untuk SSO C4C Production user a/n : GABRIELLA.ELPRANA@SINARMASLAND.COM
+Action : Add user to Enterprise Application ( SAP CLoud for customer Production )
+Result : User has been added to SAP C4C Production
+
+*Task Template :*
+Trace Email Not Delivered :
+1. Open Exchange Admin Portal
+2. Open Mail Flow 
+3. Trace email by Subject / Sender / Recipient & Filter by Date
+
+Summary : Trace email not delivered from sender External to recipinet Hans.Perdana@sinarmasland.com
+Action : 
+1. Open Exchange Admin Portal
+2. Open Mail Flow 
+3. Trace email by Subject / Sender / Recipient & Filter by Date
+Result : No email found based  on trace , has been inform to requester.
+
+
+
+======================================================================
+
+Daily Check Sysadmin :
+
+*command  PS for check service AD :
+Get-Service -Name 'NTDS' , 'Kdc' , 'DNS' , 'Netlogon' , 'W32Time' , 'ADWS' , 'DFSR' , 'rpcss' , 'SamSs' , 'LanmanServer'
+
+*command PS for get service CA :
+Get-Service -Name 'CertSvc', 'cryptsvc', 'rpcss', 'w3svc' , 'w32time'
+
+======================================================================
+
+
+Description
+To: itsm@ddiopscenter.com
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC  : Ramandita Yudia Perdana
+Requester : Ahmad Ari Wibawa
+Status : Done
+1.Date/time : Minggu, 6/April/2025
+2.Request JOB : Support, monitoring and troubleshooting sysadmin job, all backup job, Email O365 & Active Directory due standby onsite RAFI (Hari Raya Idul Fitri) 2025.
+3.RCA : :
+4.Impact : :
+5.Finding : :
+6.Recommendation : :
+Terima kasih
+
+========================================================================
+
+
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Leoanardo Panbasten
+Status            : Done
+1.Date/time       : 5/May/2025
+2.Request JOB     : Reset Password user AD (profane damiani , Brigita.Febrian , Astari.Paramita)
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : Temuan log audit / event log security soc
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Leoanardo Panbasten
+Status            : Done
+1.Date/time       : 5/May/2025
+2.Request JOB     : Trace event viewer log user AD Astari.Paramita pada jumhost wintel jh:wintel:ntt
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : Temuan log audit / event log security soc , result : No Data on event viewer.
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Hery Tjandra
+Status            : Done
+1.Date/time       : 8/May/2025 malam s/d 9/May/2025 pagi
+2.Request JOB     : Standby & support migrasi / upgrade server Root CA & Intermediate CA Self sign sinarmasland.net from server 2019 to 2022
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : :
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Adnan.Ramadhan@samaktamitra.com
+Status            : Done
+1.Date/time       : 9/May/2025
+2.Request JOB     : Pengecekan GPO Applied di user :
+Ajeng Fitri Anggrayni :::::SML10:UN001781
+Gracia Tiara :::: SML10:UN002537
+Riezkina Putri Utama :::: SML10:UN002230
+*Terkait dengan temuan certificate SASE yang hilang pada ketiga komputer di user user tersebut.
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : Inheritence GPO terpantau normal.
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Alfian Permadi
+Status            : Done
+1.Date/time       : 14/May/2025
+2.Request JOB     : Install ACS di server ITDR 10.208.59.10 keperluan Trend Micro AV
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : :
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Anton Wijaya
+Status            : Done
+1.Date/time       : 14/May/2025
+2.Request JOB     : Migrate backup SAP HANA server AWS (R3CID03 & R3CIP03) dari backup by commvault ke backup by Veeam Plugin
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : :
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Muhammad Alief Rizki
+Status            : Done
+1.Date/time       : 15/May/2025
+2.Request JOB     : Create report backup SAP HANA server SAP 781 Mitbana  SMLSMMCIP01 (Supporting evidence/documentation for monitoring backup activity (report Backup from Veam Report or Commvault)
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : :
+6.Recommendation : :
+Terima kasih
+
+
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Muhammad Alief Rizki
+Status            : Done
+1.Date/time       : 21/May/2025
+2.Request JOB     : Create report backup server Databackup AITISQL smlmsaitisvrap1 [10.207.58.29] periode 2024
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : :
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Muhammad Alief Rizki
+Status            : Done
+1.Date/time       : 20/June/2025
+2.Request JOB     : Create report backup server Databackup AITISQL smlmsaitisvrap1 / smlaitip01 [10.207.58.29] periode JANUARI 2024 s/d APRIL 2025
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : :
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Achmad Mursalin
+Status            : Done
+1.Date/time       : 19/May/2025
+2.Request JOB     : Remove hostname : SML19:UN000010 , untuk keperluan Rejoin Domain.
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : :
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Yugo Raharjo
+Status            : Done
+1.Date/time       : 19/May/2025
+2.Request JOB     : Remove 18 hostname untuk keperluan Rejoin Domain komputer2 berikut,
+SML10:UN000437,SML10:UN000616,SML10:UN000938,SML10:UN000475,SML10:UN001238,SML10:UN002186,SML10:UN002169,SML10:UN002587,SML10:UN002094,
+SML10:UN000918,SML10:UN001912,SML10:UN002598,SML10:UN000862,SML10:UN002058,SML10:UN001366,SML10:UN001313,SML10:UN002210,SML10:UN002543 
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : :
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Alfian Permadi
+Status            : Done
+1.Date/time       : 21/May/2025
+2.Request JOB     : Reset password user AD alfian.permadi@sinarmasland.com
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : :
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Hery Tjandra
+Status            : Done
+1.Date/time       : 22/May/2025
+2.Request JOB     : EXTEND REPO VEEAM AWS HLR for CCF Request number CCF 3000:2025:DR:0001146
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : :
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Anton Wijaya
+Status            : Done
+1.Date/time       : 25/May/2025
+2.Request JOB     : Install agent backup DB2 commvault & setting schecdule , backup job in server azure DB2 smlb18lxp01 [10.207.62.71]
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : :
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Fauzan
+Status            : Done
+1.Date/time       : 26/May/2025
+2.Request JOB     : Remove Hostname Sml10:Un000442 di AD untuk keperluan Rejoin domain
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : Name Exist
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Hafizh Anjar Saputra
+Status            : Done
+1.Date/time       : 1/Jun/2025
+2.Request JOB     : 
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : :
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Reyhan Priya Bhaskara
+Status            : Done
+1.Date/time       : 12/Jun/2025
+2.Request JOB     : Backup VM onprem SMLAOBSDP01 [10.200.62.101] backup on Veeam
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : :
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Muhammad Alief Rizki
+Status            : Done
+1.Date/time       : 18/Jun/2025
+2.Request JOB     : Restore 2 VM AWS to Onprem , as request CCF no : 3000:2025:DR:0001218 , SMLHC_Lollipop [10.202.69.12] , smlhrtadpcdbp01 [10.202.59.76]
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : :
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Reyhan Priya Bhaskara
+Status            : Done
+1.Date/time       : 23/Jun/2025
+2.Request JOB     : Restore (veeam) 1 VM Azure to Azure, server soc smlcybaptap01 [10.207.2.62] / InstanceName : smlcybaptap02 , restore vm name : SMLCYBAPTAP02:Restore22Juni2025
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : :
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Faizal Angkasa
+Status            : Done
+1.Date/time       : 25/Jun/2025
+2.Request JOB     : Trace user AD yang terlocked a/n user Faizal Angkasa
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : Terlock dari perangkat hostname : SMLMSARCSCONAP2
+6.Recommendation : :
+Terima kasih
+
+Dear Team ITSM, mohon bantuannya untuk create tiket SVR dibawah:
+PIC         : Ramandita Yudia Perdana
+Requester   : Pujiono
+Status            : Done
+1.Date/time       : 25/Jun/2025
+2.Request JOB     : Remove hostname SML43:UD000014 untuk keperluan rejoin domain
+3.RCA			  : :
+4.Impact          : :
+5.Finding         : Hostname / computer exist
+6.Recommendation : :
+Terima kasih
+
+
+========================================================================
+Template baru : 
+
+Subject :Sysadmin SVR – Add user natania.hutama@sinarmasland.com pada conditional access Required MFA for admin & revoke session
+Description : 
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Type of Activity  : ADD
+Requester            : Hafizh Anjar Saputra
+Technician           : Ramandita YP
+VM Name            :  :
+IP Adress              : :
+Location              : :
+Date of Activity  : 01/06/2025
+Detail Activity     : Add user natania.hutama@sinarmasland.com pada conditional access Required MFA for admin & revoke session
+
+Terima kasih.
+
+
+Subject :Sysadmin SVR – Revisi Report Backup AITISQL periode Jan:Dec 2024
+Description : 
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Type of Activity  : Project Support
+Requester            : Muhammad Alief Rizki
+Technician           : Ramandita YP
+VM Name              : SMLMSAITISVRAP1 / SMLAITIP01
+IP Adress            : 10.207.58.29
+Location             : Azure
+Date of Activity  : 03/06/2025
+Detail Activity     : Revisi Report Backup AITISQL periode Jan:Dec 2024 , penambahan data backup onsite periode April:December 2024
+
+Terima kasih.
+
+
+
+Subject :Sysadmin SVR – Extend Size Repo VEEAM AWS HLR (smllxveamrepap2 [10.202.63.21])
+Description : 
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Type of Activity  : ADD
+Requester            : Hery Tjandra
+Technician           : Ramandita YP
+VM Name              : smllxveamrepap2
+IP Adress            : 10.202.63.21
+Location             : AWS
+Date of Activity  : 05/06/2025
+Detail Activity     : Extend Size Repo VEEAM AWS HLR (smllxveamrepap2 [10.202.63.21]) sebesar 200 GB dari 6,9 TB to 7,1 TB
+
+Terima kasih.
+
+Subject :Sysadmin SVR – Create report backup Rhapsody server Rancamaya SMLMSRCMYSVRDP1 [10.207.61.56] & SMLMSRCMYSVRAP1 [10.207.61.53]
+Description : 
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Type of Activity  : Project Support
+Requester            : Muhammad Alief Rizki
+Technician           : Ramandita YP
+VM Name              : SMLMSRCMYSVRDP1 & SMLMSRCMYSVRAP1
+IP Adress            : 10.207.61.56 & 10.207.61.53
+Location             : Azure
+Date of Activity  : 05/06/2025
+Detail Activity     : Create report backup Rhapsody server Rancamaya SMLMSRCMYSVRDP1 [10.207.61.56] & SMLMSRCMYSVRAP1 [10.207.61.53]
+
+Terima kasih.
+
+
+Subject :Sysadmin SVR – Remove Hostname : SML10:UN00938 untuk keperluan rejoin domain
+Description : 
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Type of Activity  : Delete
+Requester            : Yugo Raharjo
+Technician           : Ramandita YP
+VM Name              : :
+IP Adress            : :
+Location             : Rancamaya
+Date of Activity  : 05/06/2025
+Detail Activity     : Remove Hostname : SML10:UN00938 untuk keperluan rejoin domain
+
+Terima kasih.
+
+Subject :Sysadmin SVR – Monitor failed backup Veeam , running failed backup SAP HANA & pengecekan log event server VBR 10.200.63.101 memory exhausted.
+Description : 
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Type of Activity  : Project Support
+Requester            : Afan Therik
+Technician           : Ramandita YP
+VM Name              : smlmsveamvbrdp1
+IP Adress            : 10.200.63.101
+Location             : Azure
+Date of Activity  : 7/JUNI/2025
+Detail Activity     : Monitor failed backup Veeam , running failed backup SAP HANA & pengecekan log event server VBR 10.200.63.101 memory exhausted.
+
+Terima kasih.
+
+Subject :Sysadmin SVR – Running backup veeam untuk vm vm yang gagal dibackup di Veeam (VBA AWS).
+Description : 
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Type of Activity  : Project Support
+Requester            : Afan Therik
+Technician           : Ramandita YP
+VM Name              : HCCIP01:New Install, BICIPJV1_NewInstall, r3ciq01 : SAP Dev Live , SMLWAUDBP01 , SMLITCPMEAPP01, SMLNETDBP01
+IP Adress            : :
+Location             : Azure
+Date of Activity  : 10/JUNI/2025
+Detail Activity     : Running backup veeam untuk vm vm yang gagal dibackup di Veeam (VBA AWS) : HCCIP01:New Install, BICIPJV1_NewInstall, r3ciq01 : SAP Dev Live , SMLWAUDBP01 , SMLITCPMEAPP01, SMLNETDBP01.
+
+Terima kasih.
+
+Subject :Sysadmin SVR – Unlock user AD a/n : herumurti.sutaryo@sinarmasland.com
+Description : 
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Type of Activity  : CHANGE
+Requester            : Dimas Firmantoro
+Technician           : Ramandita YP
+VM Name              : :
+IP Adress            : :
+Location             : :
+Date of Activity  : 17/JUNI/2025
+Detail Activity     : Unlock user AD a/n : herumurti.sutaryo@sinarmasland.com
+
+Terima kasih.
+
+Subject :Sysadmin SVR – Running backup veeam untuk vm vm yang gagal dibackup di Veeam (VBA AWS).
+Description : 
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Type of Activity  : Project Support
+Requester            : 
+Technician           : Ramandita YP
+VM Name              : 
+IP Adress            : :
+Location             : Azure
+Date of Activity  : 10/JUNI/2025
+Detail Activity     : Subject :Sysadmin SVR – Running backup veeam untuk vm vm yang gagal dibackup di Veeam (VBA AWS).
+
+Terima kasih.
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : 
+Type of Activity  : MOVE
+Requester            : Ary Ritiandy
+Technician           : Ramandita YP
+VM Name            :  SMLWEBHOSTD01
+IP Adress              : 10.202.1.126
+Location              : AWS
+Date of Activity  : 02/07/2025
+Detail Activity     : Restore File Level Recovery SMLWEBHOSTD01 [10.202.1.126] , restore from VEEAM of 2 File restore point 4/June/2025
+Terima kasih.
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : 
+Type of Activity  : ADD
+Requester            : Anton Wijaya
+Technician           : Ramandita YP
+VM Name            :  smllxveamrepap2
+IP Adress              : 10.202.63.21
+Location              : AWS
+Date of Activity  : 02/07/2025
+Detail Activity     : Extend VG Repo AWS HLR for make sure backup SAP HANA Production running after backup retention slow aging.
+Terima kasih.
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : 
+Category : Sysadmin : Backup
+Type of Activity  : ADD
+Item : Veeam Baackup OnPremise
+Requester            : Anton Wijaya
+Technician           : Ramandita YP
+VM Name            :  R3CIV01 , SMLSMMCIP01 , SMLSMMHCP01 , R3CIP03 , PCCIPV1
+IP Adress              : 10.202.62.188 , 10.202.62.90 , 10.202.62.70 , 10.202.62.86 , 10.202.62.121
+Location              : AWS
+Date of Activity  : 02/07/2025
+Detail Activity     : Running Full backup SAP HANA Veeam for HANA DB (Systemdb & Tenantdb) server R3CIV01 , SMLSMMCIP01 , SMLSMMHCP01 , R3CIP03 , PCCIPV1
+Terima kasih.
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Unlock user AD vera.donika@sinarmasland.com 
+Category : 
+Type of Activity  : CHANGE
+Item : 
+Requester            : ITSM
+Technician           : Ramandita YP
+VM Name            :  :
+IP Adress              : :
+Location              : ONPREM
+Date of Activity  : 03/07/2025
+Detail Activity     : Unlock user AD vera.donika@sinarmasland.com
+Terima kasih.
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Revert snapshot vm 10.200.2.64 ke tgl snapshot 4 Juli 2025
+Category : VMWare
+Type of Activity  : CHANGE
+Item : 
+Requester            : Faizal Angkasa
+Technician           : Ramandita YP
+VM Name            :  smlcybapsmp02
+IP Adress              : 10.200.2.64
+Location              : ONPREM
+Date of Activity  : 05/07/2025
+Detail Activity     : Revert snapshot vm smlcybapsmp02 [10.200.2.64] ke tgl snapshot 4 Juli 2025
+Terima kasih.
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Retry backup Full Saturday yg failed di backup VM onprem karena disk s3 netapp full
+Category : Sysadmin : Backup
+Type of Activity  : ADD
+Item : Veeam Backup OnPremise
+Requester            : Afan Therik
+Technician           : Ramandita YP
+VM Name            :  VBR
+IP Adress              : 10.200.63.101
+Location              : ONPREM
+Date of Activity  : 05/07/2025
+Detail Activity     : Retry backup Full Saturday yg failed di backup VM onprem karena disk s3 netapp full
+Terima kasih.
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Create Slide report monthly Backup & Risk user Sysadmin periode Juni 2025 
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Reporting
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  :
+IP Adress              : :
+Location              : :
+Date of Activity  : 03/07/2025
+Detail Activity     : Create Slide report monthly Backup & Risk user Sysadmin periode Juni 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Create Report Monthly Backup Appendix (Backup Veeam VBA Azure) periode Juni 2025 
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Reporting
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  :
+IP Adress              : :
+Location              : :
+Date of Activity  : 03/07/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Veeam VBA Azure) periode Juni 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Create Report Monthly Backup Appendix (Backup Onsite Commvault) periode Juni 2025 
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Reporting
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  :
+IP Adress              : :
+Location              : :
+Date of Activity  : 03/07/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Onsite Commvault) periode Juni 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Create Report Monthly Backup Appendix (Backup Offload / Backup Copy Commvault) periode Juni 2025
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Reporting
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  :
+IP Adress              : :
+Location              : :
+Date of Activity  : 03/07/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Offload / Backup Copy Commvault) periode Juni 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Create Report Backup SAP 733 R3CIP03 Periode tahun 2022 s/d Mei 2025
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Reporting
+Requester            : Muhammad Alief Rizki
+Technician           : Ramandita
+VM Name            :  :
+IP Adress              : :
+Location              : :
+Date of Activity  : 10/07/2025
+Detail Activity     : Create Report Backup SAP 733 R3CIP03 Periode tahun 2022 s/d Mei 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Add user kedalam group AD AAD:STAFF
+Category : Sysadmin Active Directory
+Subcategory  : ADD
+Item : Groups
+Requester            : Bagas Suryo Anggoro
+Technician           : Ramandita
+VM Name            :  :
+IP Adress              : :
+Location              : :
+Date of Activity  : 11/07/2025
+Detail Activity     : Add user kedalam group AD AAD:STAFF (Bimy.finnahari,Dian.fitriyani,Heru.Purnama)
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Join domain komputer grand wisata hostname SML:GWBISDEV5B
+Category : Sysadmin Active Directory
+Subcategory  : ADD
+Item : Computers
+Requester            : Dendi@sinarmasland.com
+Technician           : Ramandita
+VM Name            :  :
+IP Adress              : 10.96.24.76
+Location              : Grand Wisata
+Date of Activity  : 15/07/2025
+Detail Activity     : Join domain komputer grand wisata hostname SML:GWBISDEV5B
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Add user dewi.moenir@sinarmasland.com kedalam member group AD AAD-STAFF
+Category : Sysadmin Active Directory
+Subcategory  : ADD
+Item : Groups
+Requester            : Bagas Suryo Anggoro
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 17/07/2025
+Detail Activity     : Add user dewi.moenir@sinarmasland.com kedalam member group AD AAD-STAFF
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Create Report Backup Onsite Offsite Server SAP HCM (HCCIP01) & Server ESS (SMLESDBP01) periode Jan 2024 s/d Mei 2025
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Reporting
+Requester            : Muhammad Alief Rizki
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 16/07/2025
+Detail Activity     : Create Report Backup Onsite Offsite Server SAP HCM (HCCIP01) & Server ESS (SMLESDBP01) periode Jan 2024 s/d Mei 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Trace email not delivered from sender muhammad.fahlevi@sinarmasland.com (Mail Quarantined)
+Category : Sysadmin M365
+Subcategory  : Troubleshoot
+Item : Exchange Online
+Requester            : Muhammad Risyad Fahlevi
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 17/07/2025
+Detail Activity     : Trace email not delivered from sender muhammad.fahlevi@sinarmasland.com (Mail Quarantined)
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Install ACS di server Win Server 2019 , SMLHPSCKW01 [10.96.8.18]
+Category : Sysadmin WSUS
+Subcategory  : ADD
+Item : Patch Security Update
+Requester            : Aziz Sihabudin
+Technician           : Ramandita
+VM Name            :  SMLHPSCKW01
+IP Adress              : 10.96.8.18
+Location              : -
+Date of Activity  : 17/07/2025
+Detail Activity     : Install ACS di server Win Server 2019 , SMLHPSCKW01 [10.96.8.18]
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Trace email suspect not delivered / delay delievered
+Category : Sysadmin M365
+Subcategory  : Troubleshoot
+Item : Exchange Online
+Requester            : ITSM
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 18/07/2025
+Detail Activity     : Trace email suspect not delivered / delay delievered from sender tax.18@sinarmasland.com tax.28@sinarmasland.com to simon.purba@sinarmasland.com
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Extend Disk server/VM Veeam VBR smlmsveamvbrdp1 [10.200.63.101] based on CCF no 9200-2025-DR-0000118 > 3000-2025-DR-0001683
+Category : OnPremise
+Subcategory  : OnPremise
+Item : MACD VM
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  smlmsveamvbrdp1
+IP Adress              : 10.200.63.101
+Location              : OnPremise
+Date of Activity  : 18/07/2025
+Detail Activity     : Extend Disk 0 (Drive C:\) server/VM Veeam VBR smlmsveamvbrdp1 from [10.200.63.101] based on CCF no 9200-2025-DR-0000118 > 3000-2025-DR-0001683
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Power On VM / Server Onpremise SOC SMLLXLIBREMNAP1 [10.200.2.20] 
+Category : Sysadmin - OnPremise
+Subcategory  : Change
+Item : Power On VM
+Requester            : Faizal Angkasa
+Technician           : Ramandita
+VM Name            :  SMLLXLIBREMNAP1
+IP Adress              : 10.200.2.20
+Location              : OnPremise
+Date of Activity  : 18/07/2025
+Detail Activity     : Power On VM / Server Onpremise SOC SMLLXLIBREMNAP1 [10.200.2.20]
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Pengecekan hostname spv-marketing di AD 
+Category : Sysadmin - Active Directory
+Subcategory  : Troubleshoot
+Item : Computers
+Requester            : Pujiono
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 17/07/2025
+Detail Activity     : Pengecekan hostname spv-marketing di AD
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Install ACS di server Win Server 2012 R2 , SMLHPSCBIJKT001 [10.95.18.88]
+Category : Sysadmin WSUS
+Subcategory  : ADD
+Item : Patch Security Update
+Requester            : Aziz Sihabudin
+Technician           : Ramandita
+VM Name            :  SMLHPSCBIJKT001
+IP Adress              : 10.96.8.18
+Location              : -
+Date of Activity  : 18/07/2025
+Detail Activity     : Install ACS di server Win Server 2019 , SMLHPSCKW01 [10.95.18.88]
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Add user kedalam group AD AAD-STAFF (Dannia Shisy Amelia)
+Category : Sysadmin Active Directory
+Subcategory  : ADD
+Item : Groups
+Requester            : Muhammad Risyad Fahlevi
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 25/07/2025
+Detail Activity     : Add user kedalam group AD AAD-STAFF (Dannia Shisy Amelia)
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Add users to enterprise application Entra SAP Cloud for Customer - Production 
+Category : Sysadmin Microsoft Entra
+Subcategory  : ADD
+Item : Users
+Requester            : ITSM
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 25/07/2025
+Detail Activity     : Add users to enterprise application Entra SAP Cloud for Customer - Production (Erlangga.Febrian , Zefanya.Dharmawan)
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Koordinasi dengan tim AWS terkait server VBA AWS yang down & Retry / Running manual backup job AWS yang failed disebabkan oleh server VBA yang hank disisi AWS
+Category : Sysadmin - Backup
+Subcategory  : Troubleshoot
+Item : Users
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : AWS
+Date of Activity  : 25/07/2025
+Detail Activity     : Koordinasi dengan tim AWS terkait server VBA AWS yang down & Retry / Running manual backup job AWS yang failed disebabkan oleh server VBA yang hank disisi AWS
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Reboot server Veeam VBR (10.200.63.101) & Veeam One (10.200.63.102) - Veeam Console not responding & cannot login.
+Category : Sysadmin - Backup
+Subcategory  : Troubleshoot
+Item : Users
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : AWS
+Date of Activity  : 25/07/2025
+Detail Activity     : Reboot server Veeam VBR (10.200.63.101) & Veeam One (10.200.63.102) - Veeam Console not responding & cannot login.
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Pengecekan / audit backup backup veeam onprem & SAP HANA yang failed sejak tgl 26 Juli 2025
+Category : Sysadmin - Backup
+Subcategory  : Troubleshoot
+Item : Users
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : ONPREM
+Date of Activity  : 25/07/2025
+Detail Activity     : Pengecekan / audit backup backup veeam onprem & SAP HANA yang failed sejak tgl 26 Juli 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Add user yunika@sinarmasland.com kedalam member group AD AAD-STAFF
+Category : Sysadmin Active Directory
+Subcategory  : ADD
+Item : Groups
+Requester            : Bagas Suryo Anggoro
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 28/07/2025
+Detail Activity     : Add user yunika@sinarmasland.com kedalam member group AD AAD-STAFF
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Add users to enterprise application Entra SAP Cloud for Customer - Production 
+Category : Sysadmin Microsoft Entra
+Subcategory  : ADD
+Item : Users
+Requester            : Andy Suryawan
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 29/07/2025
+Detail Activity     : Add users to enterprise application Entra SAP Cloud for Customer - Production (MICHAEL.SADEWO@SINARMASLAND.COM , YEHESKIEL.R@SINARMASLAND.COM)
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Add user kedalam member group AD AAD-STAFF (smagent1-3,Chatagent1-9,Ecagent1-2)
+Category : Sysadmin Active Directory
+Subcategory  : ADD
+Item : Groups
+Requester            : Muhammad Risyad Fahlevi
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 29/07/2025
+Detail Activity     : Add user kedalam member group AD AAD-STAFF (smagent1-3,Chatagent1-9,Ecagent1-2)
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Trace email not delivered from sender humancapital.shhm@sinarmasland.com  (Shared Mailbox)
+Category : Sysadmin M365
+Subcategory  : Troubleshoot
+Item : Exchange Online
+Requester            : ITSM
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 29/07/2025
+Detail Activity     : Trace email not delivered from sender humancapital.shhm@sinarmasland.com  (Shared Mailbox)
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Reset MFA user gatot.sudarmanto@sinarmasland.com
+Category : Data Management Services
+Subcategory  : Data Management Services
+Item : Reset MFA
+Requester            : ITSM
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 29/07/2025
+Detail Activity     : Reset MFA user gatot.sudarmanto@sinarmasland.com
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Troubleshoot backup failed Veeam SAP HANA Plugin server smlsiwlxp01 & smlsiwlxd01
+Category : Sysadmin - Backup
+Subcategory  : Project Support
+Item : Troubleshoot
+Requester            : Anton Wijaya
+Technician           : Ramandita
+VM Name            :  smlsiwlxp01 & smlsiwlxd01
+IP Adress              : 10.207.62.100 & 10.207.60.100
+Location              : Azure
+Date of Activity  : 25/07/2025
+Detail Activity     : Troubleshoot backup failed Veeam SAP HANA Plugin server smlsiwlxp01 & smlsiwlxd01
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Install(Upgrade) VMWare Tools 12.5.3 server SMLMSVEAMONEDP1
+Category : Sysadmin - OnPremise
+Subcategory  : Add
+Item : Virtual Machine (VM)
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  SMLMSVEAMONEDP1
+IP Adress              : 10.200.63.102
+Location              : Onpremis
+Date of Activity  : 31/07/2025
+Detail Activity     : Install(Upgrade) VMWare Tools 12.5.3 server SMLMSVEAMONEDP1
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Install(Upgrade) VMWare Tools 12.5.3 server SMLMSVEAMVBRDP1
+Category : Sysadmin - OnPremise
+Subcategory  : Add
+Item : Virtual Machine (VM)
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  SMLMSVEAMVBRDP1
+IP Adress              : 10.200.63.101
+Location              : Onpremis
+Date of Activity  : 31/07/2025
+Detail Activity     : Install(Upgrade) VMWare Tools 12.5.3 server SMLMSVEAMVBRDP1
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Pengecekan & Troubleshooting VM Down server soc SMLCYBAPSMP01 [10.200.2.63]
+Category : Sysadmin - OnPremise
+Subcategory  : Troubleshoot
+Item : Virtual Machine (VM)
+Requester            : Faizal Angkasa
+Technician           : Ramandita
+VM Name            :  SMLCYBAPSMP01
+IP Adress              : 10.200.2.63
+Location              : Onpremise
+Date of Activity  : 02/08/2025
+Detail Activity     : Pengecekan & Troubleshooting VM Down server soc SMLCYBAPSMP01 [10.200.2.63]
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Pengecekan & Troubleshooting VM Down server SMLHPSCP001 & SMLHPSCP002
+Category : Sysadmin - OnPremise
+Subcategory  : Troubleshoot
+Item : Virtual Machine (VM)
+Requester            : NOC
+Technician           : Ramandita
+VM Name            :  SMLHPSCP001 , SMLHPSCP002
+IP Adress              : 10.200.56.40 , 10.200.56.41
+Location              : Onpremise
+Date of Activity  : 02/08/2025
+Detail Activity     : Pengecekan & Troubleshooting VM Down server SMLHPSCP001 & SMLHPSCP002
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Install(Upgrade) VMWare Tools 12.5.3 server SMLMSWSUS01 [10.200.56.25]
+Category : Sysadmin - OnPremise
+Subcategory  : Add
+Item : Virtual Machine (VM)
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  SMLMSWSUS01
+IP Adress              : 10.200.56.25
+Location              : Onpremis
+Date of Activity  : 05/08/2025
+Detail Activity     : Install(Upgrade) VMWare Tools 12.5.3 server SMLMSWSUS01 [10.200.56.25]
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Install(Upgrade) VMWare Tools 12.5.3 server SMLPS2FSP01 [10.200.51.180]
+Category : Sysadmin - OnPremise
+Subcategory  : Add
+Item : Virtual Machine (VM)
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  SMLPS2FSP01
+IP Adress              : 10.200.51.180
+Location              : Onpremise
+Date of Activity  : 05/08/2025
+Detail Activity     : Install(Upgrade) VMWare Tools 12.5.3 server SMLPS2FSP01 [10.200.51.180]
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create CSR for certificate SSL public request (wildcard) *.sinarmasland.com
+Category : Sysadmin - Certificate Authentication
+Subcategory  : Add
+Item : Generate_Certificate
+Requester            : Muhammad Risyad Fahlevi
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : Onpremise
+Date of Activity  : 07/08/2025
+Detail Activity     : Create CSR for certificate SSL public request (wildcard) *.sinarmasland.com
+Terima kasih
+
+Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Onsite Commvault) periode Juli 2025
+Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Veeam VBA Azure) periode Juli 2025
+Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Veeam VBA AWS) periode Juli 2025
+Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Veeam VBR onpremise) periode Juli 2025
+Sysadmin SVR - Create Slide report monthly Backup & Risk user Sysadmin periode Juli 2025
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Slide report monthly Backup & Risk user Sysadmin periode Juli 2025
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Reporting
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 06/08/2025
+Detail Activity     : Sysadmin SVR - Create Slide report monthly Backup & Risk user Sysadmin periode Juli 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Remove hostname untuk keperluan rejoin domain , hostname : SML26-UN000032
+Category : Sysadmin - Active Directory
+Subcategory  : Delete
+Item : Computers
+Requester            : Widiantoro
+Technician           : Ramandita
+VM Name            :  SML26-UN000032
+IP Adress              : -
+Location              : -
+Date of Activity  : 09/19/2025
+Detail Activity     : Remove hostname untuk keperluan rejoin domain , hostname : SML26-UN000032
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Move hostname SML43-UD000009 keluar OU Tier2 Kebutuhan untuk akses shared folder /printer
+Category : Sysadmin - Active Directory
+Subcategory  : Move
+Item : Computers
+Requester            : Pujiono
+Technician           : Ramandita
+VM Name            :  Hostname (SML43-UD000009)
+IP Adress              : -
+Location              : -
+Date of Activity  : 07/08/2025
+Detail Activity     : Move hostname SML43-UD000009 keluar OU Tier2 Kebutuhan untuk akses shared folder /printer after penerapan security baseline GPO AD revamp
+Terima kasih
+
+-Onhold : -
+-RCA : Kebutuhan untuk akses shared folder /printer after penerapan security baseline GPO AD revamp
+-Action : Move hostname SML43-UD000009 keluar OU Tier2 
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Install(Upgrade) VMWare Tools 12.5.3 server smlmscertsvrap1
+Category : Sysadmin - OnPremise
+Subcategory  : Add
+Item : Virtual Machine (VM)
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  smlmscertsvrap1
+IP Adress              : 10.200.56.160
+Location              : Onpremise
+Date of Activity  : 07/08/2025
+Detail Activity     : Install(Upgrade) VMWare Tools 12.5.3 server smlmscertsvrap1
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Install(Upgrade) VMWare Tools 12.5.3 server smlmscertsvrap2
+Category : Sysadmin - OnPremise
+Subcategory  : Add
+Item : Virtual Machine (VM)
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  smlmscertsvrap2
+IP Adress              : 10.200.56.161
+Location              : Onpremise
+Date of Activity  : 07/08/2025
+Detail Activity     : Install(Upgrade) VMWare Tools 12.5.3 server smlmscertsvrap2
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Install(Upgrade) VMWare Tools 12.5.3 server SMLMSADDSSVRAP2
+Category : Sysadmin - OnPremise
+Subcategory  : Add
+Item : Virtual Machine (VM)
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  SMLMSADDSSVRAP2
+IP Adress              : 10.200.56.152
+Location              : Onpremise
+Date of Activity  : 07/08/2025
+Detail Activity     : Install(Upgrade) VMWare Tools 12.5.3 server SMLMSADDSSVRAP2
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Trace email from sender: agustinus.djuwardi To recipient: itsm@sinarmasland from 1-31/July/2025 
+Category : Sysadmin - M365
+Subcategory  : Troubleshoot
+Item : Exchange Online
+Requester            : ITSM
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 11/08/2025
+Detail Activity     : Trace email from sender: agustinus.djuwardi To recipient: itsm@sinarmasland from 1-31/July/2025 
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Unlock user AD Fariz Fauzan Azka
+Category : Sysadmin - Active Directory
+Subcategory : Change
+Item : Users
+Requester            : ITSM
+Technician           : Ramandita YP
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 12/08/2025
+Detail Activity     : Unlock user AD Fariz Fauzan Azka
+Terima kasih.
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Add Backup Veeam VM Azure SMLLXLOYALTYAP1-New & SMLLXLOYALTYAP2-New 
+Category : Sysadmin - Backup
+Subcategory  : Add
+Item : Veeam Backup Azure
+Requester            : Raihan Arfi Maulana
+Technician           : Ramandita
+VM Name            :  SMLLXLOYALTYAP1-New , SMLLXLOYALTYAP2-New
+IP Adress              : 10.207.59.102 , 10.207.59.103 
+Location              : Azure
+Date of Activity  : 13/08/2025
+Detail Activity     : Add Backup Veeam VM Azure SMLLXLOYALTYAP1-New & SMLLXLOYALTYAP2-New
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Remove/Delete Backup Veeam VM Onprem SMLRelayPrinter  
+Category : Sysadmin - Backup
+Subcategory  : Delete
+Item : Veeam Backup OnPremise
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  SMLRelayPrinter
+IP Adress              : 10.200.56.6
+Location              : OnPremise
+Date of Activity  : 12/08/2025
+Detail Activity     : Remove/Delete Backup Veeam VM Onprem SMLRelayPrinter
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Remove/Delete Backup Veeam VM Azure SMLLXPAJAKKUAP1
+Category : Sysadmin - Backup
+Subcategory  : Delete
+Item : Veeam Backup Azure
+Requester            : Raihan Arfi Maulana
+Technician           : Ramandita
+VM Name            :  SMLLXPAJAKKUAP1
+IP Adress              : 10.207.1.25
+Location              : Azure
+Date of Activity  : 13/08/2025
+Detail Activity     : Remove/Delete Backup Veeam VM Azure SMLLXPAJAKKUAP1
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Pengecekan email user exist or not (ikra.maharsetia@sinarmasland.com)
+Category : Sysadmin - M365
+Subcategory  : Troubleshoot
+Item : Exchange Online
+Requester            : ITSM
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 12/08/2025
+Detail Activity     : Pengecekan email user exist or not (ikra.maharsetia@sinarmasland.com)
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Remove Hostname sml10-un001601 di AD untuk keperluan rejoin domain
+Category : Sysadmin - Active Directory
+Subcategory  : Delete
+Item : Computers
+Requester            : Fauzan
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 14/08/2025
+Detail Activity     : Remove Hostname sml10-un001601 di AD untuk keperluan rejoin domain
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Remove Hostname SML10-UN000735 di AD untuk keperluan rejoin domain
+Category : Sysadmin - Active Directory
+Subcategory  : Delete
+Item : Computers
+Requester            : Suhendar
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 15/08/2025
+Detail Activity     : Remove Hostname SML10-UN000735 di AD untuk keperluan rejoin domain
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Troubleshoot issue komputer WTP tidak bisa akses shared folder (uncpath \\10.98.98.6).
+Category : Sysadmin - Windows
+Subcategory  : Troubleshoot
+Item : Windows_Client
+Requester            : Muh Alex Wilda Haeroni
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : WTP
+Date of Activity  : 18/08/2025
+Detail Activity     : Troubleshoot issue komputer WTP tidak bisa akses shared folder (uncpath \\10.98.98.6).
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Troubleshoot issue komputer SML10-UD001389 [10.101.2.185] tidak bisa akses shared folder (uncpath \\10.101.2.185).
+Category : Sysadmin - Windows
+Subcategory  : Troubleshoot
+Item : Windows_Client
+Requester            : Edwin Bagus Prasojo
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 18/08/2025
+Detail Activity     : roubleshoot issue komputer SML10-UD001389 [10.101.2.185] tidak bisa akses shared folder (uncpath \\10.101.2.185).
+Terima kasih
+
+Edwin Bagus Prasojo
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Restore FLR file db mysql server SMLWEBDBP01 - New per restore point 15/Aug/2025
+Category : Sysadmin - Backup
+Subcategory  : Add
+Item : Veeam Restore AWS
+Requester            : Ary Ritiandy
+Technician           : Ramandita
+VM Name            :  SMLWEBDBP01 - New
+IP Adress              : 10.202.61.46
+Location              : AWS
+Date of Activity  : 19/08/2025
+Detail Activity     : Restore FLR file db mysql server SMLWEBDBP01 - New per restore point 15/Aug/2025
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Add Hostname Client Windows 10 & 11 yang ada di OU Tier2 AD yang belum masuk ke member group of Juniper-Mist
+Category : Sysadmin - Active Directory
+Subcategory  : Add
+Item : Groups
+Requester            : Muhamad Abdul Rivai Hi Wahab
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 20/08/2025
+Detail Activity     : Sysadmin SVR - Add Hostname Client Windows 10 & 11 yang ada di OU Tier2 AD yang belum masuk ke member group of Juniper-Mist (keperluan GPO certificate JuniperMist)
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Reset MFA user Trapsilo.wibowo@sinarmasland.com
+Category : Sysadmin - Microsoft Entra
+Subcategory  : Change
+Item : MFA
+Requester            : ITSM
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 22/08/2025
+Detail Activity     : Reset MFA user Trapsilo.wibowo@sinarmasland.com
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Retry backup manual veeam VM Onprem SMLMSNRADIUSAP1_restorednew02 yang failed 22/08/2025 
+Category : Sysadmin : Backup
+Type of Activity  : Troubslehoot
+Item : Veeam Baackup OnPremise
+Requester            : Afan Therik
+Technician           : Ramandita YP
+VM Name            :  SMLMSNRADIUSAP1_restorednew02
+IP Adress              : 10.200.2.80
+Location              : ONPREM
+Date of Activity  : 02/07/2025
+Detail Activity     : Retry backup manual veeam VM Onprem SMLMSNRADIUSAP1_restorednew02 yang failed 22/08/2025
+Terima kasih.
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Troubleshoot VM Onprem SMLAOBSDP01 Down (Snapshot issue) & Retry backup manual veeam VM Onprem SMLAOBSDP01 (10.200.62.101) yang failed 23/08/2025 
+Category : Sysadmin : Backup
+Type of Activity  : Troubslehoot
+Item : Veeam Baackup OnPremise
+Requester            : Reyhan Priya Bhaskara
+Technician           : Ramandita YP
+VM Name            :  SMLAOBSDP01 
+IP Adress              : 10.200.62.101
+Location              : ONPREM
+Date of Activity  : 24/08/2025
+Detail Activity     : Troubleshoot VM Onprem SMLAOBSDP01 Down (Snapshot issue) & Retry backup manual veeam VM Onprem SMLAOBSDP01 (10.200.62.101) yang failed 23/08/2025
+Terima kasih.
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - View member group AD (check if in administrator member or not ) for user fw_40net2ad-2 
+Category : Sysadmin - Active Directory
+Subcategory  : Project Support
+Item : Users
+Requester            : Reyhan Priya Bhaskara
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 15/08/2025
+Detail Activity     : View member group AD (check if in administrator member or not ) for user fw_40net2ad-2
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Running manual Full backup (SAP HANA Plugin) server R3CID01 after backup credential adjust.
+Category : Sysadmin - Backup
+Subcategory  : Troubleshoot
+Item : Veeam Backup Azure
+Requester            : Anton Wijaya
+Technician           : Ramandita
+VM Name            :  R3CID01
+IP Adress              : 10.202.60.60
+Location              : AWS
+Date of Activity  : 25/08/2025
+Detail Activity     : Running manual Full backup (SAP HANA Plugin) server R3CID01 after backup credential adjust.
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Backup Veeam for server Azure SMLMSRCMYSVRDP1
+Category : Sysadmin - Backup
+Subcategory  : Project Support
+Item : Veeam Backup Azure
+Requester            : Tanu Bakti Tan
+Technician           : Ramandita
+VM Name            :  SMLMSRCMYSVRDP1
+IP Adress              : 10.207.61.56
+Location              : Azure
+Date of Activity  : 26/08/2025
+Detail Activity     : Create Report Backup Veeam for server Azure SMLMSRCMYSVRDP1
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Restore Instance/VM AWS server SMLWEBDBP01 - New to AWS (Temporary) for restore Mysql Database.
+Category : Sysadmin - Backup
+Subcategory  : Project Support
+Item : Veeam Restore AWS
+Requester            : Ary Ritiandy
+Technician           : Ramandita
+VM Name            :  SMLWEBDBP01 - New
+IP Adress              : 10.202.61.46
+Location              : AWS
+Date of Activity  : 26/08/2025
+Detail Activity     : Restore Instance/VM AWS server SMLWEBDBP01 - New to AWS (Temporary) for restore  Mysql Database (Restore point 14/Aug/2025)
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Add 15 computer new join domain in OU Tier2 to member group of JuniperMist-Comp (kebutuhan push GPO Cert juniper Mist). 
+Category : Sysadmin - Active Directory
+Subcategory  : Move
+Item : Groups
+Requester            : Muhammad Abdul Rivai Hi Wahab
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : OnPremise
+Date of Activity  : 27/08/2025
+Detail Activity     : Add 15 computer new join domain OU Tier2 to member group of JuniperMist-Comp (kebutuhan push GPO Cert juniper Mist). 
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Move hostname SM19-UD000066 keluar OU Tier2 Kebutuhan untuk akses shared folder /printer
+Category : Sysadmin - Active Directory
+Subcategory  : Move
+Item : Computers
+Requester            : Achmad Mursalin
+Technician           : Ramandita
+VM Name            :  Hostname (SM19-UD000066)
+IP Adress              : -
+Location              : -
+Date of Activity  : 28/08/2025
+Detail Activity     : Move hostname SM19-UD000066 keluar OU Tier2 Kebutuhan untuk akses shared folder /printer after penerapan security baseline GPO AD revamp
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Backup server (737 SAP,Realbit Deltamas,PAS Deltamas) periode 2024-2025.
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Reporting
+Requester            : Muhammad Alief Rizki
+Technician           : Ramandita
+VM Name            :  JV9R3CIP(737 SAP),SMLCTPASM2APP01(Realbit Deltamas),SMLWAUAPP01(PAS Deltamas)
+IP Adress              : 10.202.62.157,10.202.56.179,10.202.61.18
+Location              : AWS
+Date of Activity  : 31/08/2025 s/d 01/09/2025
+Detail Activity     : Create Report Backup server (737 SAP,Realbit Deltamas,PAS Deltamas) periode 2024-2025.
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Backup (Commvault & Veeam) for server SMLCTPASM2DBP01 (RATTLES Application) periode Jan 2024 To July 2025.
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Reporting
+Requester            : Muhammad Alief Rizki
+Technician           : Ramandita
+VM Name            :  SMLCTPASM2DBP01
+IP Adress              : 10.202.56.180
+Location              : AWS
+Date of Activity  : 02/09/2025
+Detail Activity     : Create Report Backup (Commvault & Veeam) for server SMLCTPASM2DBP01 (RATTLES Application) periode Jan 2024 To July 2025.
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Running Backup Copy / Offsite Backup Commvault from storage AWS/S3 Bucket to Offsite storage Azure/Blob for last full backup August 2025 & retain job for 2 months.
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Commvault Backup
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 01/09/2025 To 02/09/2025
+Detail Activity     : Running Backup Copy / Offsite Backup Commvault from storage AWS/S3 Bucket to Offsite storage Azure/Blob for last full backup August 2025 & retain job for 2 months.
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Running Backup Copy / Offsite Backup Commvault from storage Netapp to Offsite storage Azure/Blob for last full backup August 2025 & retain job for 2 months.
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Commvault Backup
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 01/09/2025 To 02/09/2025
+Detail Activity     : Running Backup Copy / Offsite Backup Commvault from storage Netapp to Offsite storage Azure/Blob for last full backup August 2025 & retain job for 2 months.
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Remove hostname untuk keperluan rejoin domain , hostname : SML26-UN000040
+Category : Sysadmin - Active Directory
+Subcategory  : Delete
+Item : Computers
+Requester            : Widiantoro
+Technician           : Ramandita
+VM Name            :  SML26-UN000040
+IP Adress              : -
+Location              : OnPremise
+Date of Activity  : 03/09/2025
+Detail Activity     : Remove hostname untuk keperluan rejoin domain , hostname : SML26-UN000040
+Terima kasih
+
+========================================================================================================================
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Slide report monthly Backup & Risk user Sysadmin periode Agustus 2025
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Reporting
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 05/09/2025
+Detail Activity     : Create Slide report monthly Backup & Risk user Sysadmin periode Agustus 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Onsite Commvault) periode Agustus 2025
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Reporting
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 05/09/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Onsite Commvault) periode Agustus 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Offload / Backup Copy Commvault) periode Agustus 2025
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Reporting
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 05/09/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Offload / Backup Copy Commvault) periode Agustus 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Veeam VBA Azure) periode Agustus 2025
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Reporting
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 05/09/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Veeam VBA Azure) periode Agustus 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Veeam VBA AWS) periode Agustus 2025
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Reporting
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 05/09/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Veeam VBA AWS) periode Agustus 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Veeam VBR onpremise) periode Agustus 2025
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Reporting
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 05/09/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Veeam VBR onpremise) periode Agustus 2025
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Reset MFA user ferdinan.siahaan
+Category : Sysadmin - Microsoft Entra
+Subcategory  : Change
+Item : MFA
+Requester            : ITSM
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 08/09/2025
+Detail Activity     : Reset MFA user ferdinan.siahaan
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Unlock user AD vera donika
+Category : Sysadmin - Active Directory
+Subcategory  : Change
+Item : Users
+Requester            : ITSM
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 08/09/2025
+Detail Activity     : Unlock user AD vera donika
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Reset password user AD vera donika
+Category : Sysadmin - Active Directory
+Subcategory  : Change
+Item : Users
+Requester            : ITSM
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 08/09/2025
+Detail Activity     : Reset password user AD vera donika
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Running Full Backup SAP HANA DB Plugin for server PCCIDV1 (H33) , R3CIQ01 (H1Q) , R3CIV01 (H1P) , PCCIPV1 (H31)
+Category : Sysadmin Backup
+Subcategory  : Troubleshoot
+Item : Veeam Backup AWS
+Requester            : Anton Wijaya
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 05/09/2025
+Detail Activity     : Running Full Backup SAP HANA DB Plugin for server PCCIDV1 (H33) , R3CIQ01 (H1Q) , R3CIV01 (H1P) , PCCIPV1 (H31) after adjustment credential HANA DB / regarding to failed backup HANA DB.
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+
+Subject : Sysadmin SVR - Add Hostname 39 Client Windows 10 & 11 new join domain yang ada di OU Tier2 AD & CN Computers ke member group of Juniper-Mist
+Category : Sysadmin - Active Directory
+Subcategory  : Add
+Item : Groups
+Requester            : Muhamad Abdul Rivai Hi Wahab
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 09/09/2025
+Detail Activity     : Sysadmin SVR - Add Hostname 39 Client Windows 10 & 11 new join domain yang ada di OU Tier2 AD & CN Computers yang belum masuk ke member group of Juniper-Mist (keperluan GPO certificate JuniperMist)
+Hostname (DPMSMGNB00029,SM10-UN002856,SM43-UD000007,SML10-UD000420,SML10-UD000914,SML10-UD001193,SML10-UN000974,
+SML10-UN001144,SML10-UN001401,SML10-UN002078,SML10-UN002234,SML10-UN002729,SML10-UN002831,SML10-UN002836,
+SML10-UN002837,SML10-UN002838,SML10-UN002839,SML10-UN002840,SML10-UN002841,SML10-UN002842,SML10-UN002843,
+SML10-UN002844,SML10-UN002846,SML10-UN002857,SML10-UN002859,SML16-UN000020,SML16-UN000104,SML18-UD000065,
+SML19-UD000109,SML19-UN000041,SML26-UN000040,SML40-UD000094,SML40-UN00060,SML43-UD000001,SML-GW27N,
+SML-GW27NEW,SML-GW29C,SML-GW9,SML-GW90)
+
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Add user Abdul Aziz Sudiro to group SASE Management & remove from SASE Staff.
+Category : Sysadmin - Microsoft Entra
+Subcategory  : Change
+Item : Users
+Requester            : Muhammad Risyad Fahlevi
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 09/09/2025
+Detail Activity     : Add user Abdul Aziz Sudiro to group SASE Management & remove from SASE Staff.
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Troubleshoot issue komputer SML22-UD000120 tidak bisa akses printer sharing
+Category : Sysadmin - Windows
+Subcategory  : Troubleshoot
+Item : Windows_Client
+Requester            : Etwin Bagus Prasojo
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : 10.101.0.39
+Location              : site itc cempaka
+Date of Activity  : 10/09/2025
+Detail Activity     : Troubleshoot issue komputer SML22-UD000120 tidak bisa akses printer sharing - Move to outside OU Tier2.
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Trace email not delivered from sender setyo.broto@sinarmasland.com to recipient dinaslh@jakarta.go.id
+Category : Sysadmin M365
+Subcategory  : Troubleshoot
+Item : Exchange Online
+Requester            : ITSM
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 10/09/2025
+Detail Activity     : Trace email not delivered from sender setyo.broto@sinarmasland.com to recipient dinaslh@jakarta.go.id
+Terima kasih
+
+Dear Team ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR – Restore Server R3CIP03-New_install
+Category : Sysadmin - Backup
+Subcategory  : Add
+Item : Veeam Restore AWS
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            : R3CIP03-New_install
+IP Address              :
+Location              : OnPremise
+Date of Activity  : 12/09/2025
+Detail Activity     : Restore Server R3CIP03-New_install AWS to OnPremise for archive (request CAT 19 August CCF No 3000-2025-DR-0001982)
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Restore Instance/VM Azure server  smllxwebcpanp02.sinarmasland.net [10.207.3.132] restore point 10/Sep/2025.
+Category : Sysadmin - Backup
+Subcategory  : Add
+Item : Veeam Restore Azure
+Requester            : Ary Ritiandy
+Technician           : Ramandita
+VM Name            :  smllxwebcpanp02
+IP Adress              : 10.207.3.132
+Location              : Azure
+Date of Activity  : 13/09/2025
+Detail Activity     : Restore Instance/VM Azure server  smllxwebcpanp02.sinarmasland.net [10.207.3.132] restore point 10/Sep/2025.
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Change password SAP HANA DB user (SYS_VEEAM) for veeam on job hana plugin sml1lsb4dbq01 & running manual backup Job Hana, regarding issue failed backup.
+Category : Sysadmin - Backup
+Subcategory  : Troubleshoot
+Item : Veeam Backup OnPremise
+Requester            : Nurcahyo.Nugroho@nttdata.com
+Technician           : Ramandita
+VM Name            :  sml1lsb4dbq01
+IP Adress              : 10.207.50.11
+Location              : Azure
+Date of Activity  : 18/09/2025
+Detail Activity     : Change password SAP HANA DB user (SYS_VEEAM) for veeam on job hana plugin sml1lsb4dbq01 & running manual backup Job Hana, regarding issue failed backup.
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Troubleshooting & open tiket to Veeam Support terkait failed backup job Veeam VBA Azure store to Weekly Repo.
+Category : Sysadmin - Backup
+Subcategory  : Troubleshoot
+Item : Veeam Backup Azure
+Requester            : Sudarsono.Saputra@samaktamitra.com
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : Azure
+Date of Activity  : 18/09/2025
+Detail Activity     : Troubleshooting & open tiket to Veeam Support terkait failed backup job Veeam VBA Azure store to Weekly Repo (Error: Agent: Failed to process method {Transform.CopyFibInExternalRepo})
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create New user portal operator veeam VBA AWS & Azure for User Grafana (for Grafana Reporting purpose)
+Category : Sysadmin - Backup
+Subcategory  : Add
+Item : Veeam Backup Azure
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  smllxveamvbaap1 & smllxveamvbaap2
+IP Adress              : 10.207.63.20 & 10.202.63.20
+Location              : Azure
+Date of Activity  : 22/09/2025
+Detail Activity     : Create New user portal operator veeam VBA AWS & Azure for User Grafana (for Grafana Reporting purpose)
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Generate self sign in Certificate for device CBRLWPOSKOSECLTGF-WANRT01
+Category : Sysadmin - Certificate Authentication 
+Subcategory  : Add
+Item : Generate_Certificate
+Requester            : Muhammad Hanif
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 22/09/2025
+Detail Activity     : Generate self sign in Certificate for device CBRLWPOSKOSECLTGF-WANRT01
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Provide report backup offsite veeam for periode Oct/2024 To Sep/2025
+Category : Sysadmin - Backup
+Subcategory  : Project Support
+Item : Veeam Backup OnPremise
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 23/09/2025
+Detail Activity     : Provide report backup offsite veeam for periode Oct/2024 To Sep/2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Remove backup veeam for servers (SMLLXAGENTSVAP1 [10.207.1.93], SMLMSAGENTAPP02 [10.207.59.92], SMLMSAGENTAPP02-New [10.207.59.93])
+Category : Sysadmin - Backup
+Subcategory  : Delete
+Item : Veeam Backup Azure
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  SMLLXAGENTSVAP1,SMLMSAGENTAPP02,SMLMSAGENTAPP02-New
+IP Adress              : 10.207.1.93,10.207.59.92,10.207.59.93
+Location              : Azure
+Date of Activity  : 24/09/2025
+Detail Activity     : Remove backup veeam for servers (SMLLXAGENTSVAP1 [10.207.1.93], SMLMSAGENTAPP02 [10.207.59.92], SMLMSAGENTAPP02-New [10.207.59.93])
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Add user Djati atmodjo putusandoko to Group SASE Management
+Category : Sysadmin - Microsoft Entra
+Subcategory  : Add
+Item : Users
+Requester            : Muhammad Risyad Fahlevi
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 24/09/2025
+Detail Activity     : Add user Djati atmodjo putusandoko to Group SASE Management
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Support reset password AD user Faizal.angkasa
+Category : Sysadmin - Active Directory
+Subcategory  : Change
+Item : Users
+Requester            : Faizal Angkasa
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 24/09/2025
+Detail Activity     : Support reset password AD user Faizal.angkasa
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Provide report Backup Onsite Veeam ,Backup Onsite Commvault & Backup Offsite Commvault for periode Oct/2024 To Aug/2025.
+Category : Sysadmin - Backup
+Subcategory  : Project Support
+Item : Veeam Backup OnPremise
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 24/09/2025
+Detail Activity     : Provide report Backup Onsite Veeam ,Backup Onsite Commvault & Backup Offsite Commvault for periode Oct/2024 To Aug/2025.
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Add hostname sml10-un000132 to member of group Junipermist-comp
+Category : Sysadmin - Active Directory
+Subcategory  : Add
+Item : Computers
+Requester            : Suhendar
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 24/09/2025
+Detail Activity     :  Add hostname sml10-un000132 to member of group Junipermist-comp
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Set Weekly Backup for veeam AWS (Exclude Daily Job & Running Weekly Job) 24/9/2025 
+Category : Sysadmin - Backup
+Subcategory  : Change
+Item : Veeam Backup AWS
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 24/09/2025
+Detail Activity     : Set Weekly Backup for veeam AWS (Exclude Daily Job & Running Weekly Job) 24/9/2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Set Weekly Backup for veeam AWS (Exclude Daily Job & Running Weekly Job) 25/9/2025 
+Category : Sysadmin - Backup
+Subcategory  : Change
+Item : Veeam Backup AWS
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 25/09/2025
+Detail Activity     : Set Weekly Backup for veeam AWS (Exclude Daily Job & Running Weekly Job) 25/9/2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Support tim PSI for check event log forwarding AD to Sentinel (server collector Log)
+Category : Sysadmin - Active Directory
+Subcategory  : Project Support
+Item : Computers
+Requester            : arie.kriswoyo@packet-systems.com
+Technician           : Ramandita
+VM Name            :  SMLMSADDSSVRAP1 , SMLMSADDSSVRAP2 , SMLMSADLOGERAP1
+IP Adress              : 10.200.56.151 , 10.200.56.152 , 10.200.56.66
+Location              : ONPREM
+Date of Activity  : 14/08/2025
+Detail Activity     : Support tim PSI for check event log forwarding AD to Sentinel (server collector Log)
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Retry job job veeam backup AWS yang failed karena IOPS VBA AWS tinggi.
+Category : Sysadmin - Backup
+Subcategory  : Change
+Item : Veeam Backup AWS
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 25/09/2025 To 26/09/2025
+Detail Activity : Retry job job veeam backup AWS yang failed karena IOPS VBA AWS tinggi.
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Troubleshooting issue backup veeam plugin HANA on server H1P R3CIV01
+Category : Sysadmin - Backup
+Subcategory  : Troubleshoot
+Item : Veeam Backup Onprem
+Requester            : Anton Wijaya
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 25/09/2025 To 27/09/2025
+Detail Activity : 
+Troubleshooting issue backup veeam plugin HANA on server H1P R3CIV01 :
+- Raise Ticket to Veeam Support
+- Remote session with veeam support engineer
+- Raise the severity ticket on veeam portal for next troubleshoot
+- Grep log and send to veeam engineer for analyze
+- Crete New job & Running Full Backup HANA DB (New Job Backup is successful)
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Provide report Backup Offsite Veeam split by Onprem, AWS, Azure per months for periode Oct/2024 To Sep/2025.
+Category : Sysadmin - Backup
+Subcategory  : Project Support
+Item : Veeam Backup OnPremise
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 29/09/2025
+Detail Activity     : Provide report Backup Offsite Veeam split by Onprem, AWS, Azure per months for periode Oct/2024 To Sep/2025.
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Support reset password user AD alfian.permadi@sinarmasland.com
+Category : Sysadmin - Active Directory
+Subcategory  : Change
+Item : Users
+Requester            : Alfian Permadi
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 30/09/2025
+Detail Activity     : Support reset password user AD alfian.permadi@sinarmasland.com
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Support initiate backup hana plugin veeam for server M1D , M2D , M1P , M2P after finding issue credential user HANA.
+Category : Sysadmin - Backup
+Subcategory  : Troubleshooting
+Item : Veeam Backup OnPremise
+Requester            : Anton Wijaya
+Technician           : Ramandita
+VM Name            :  smlsmmhcp01(M2P),smlsmmcip01(M1P),SMLSMMHCD01(M2D),smlsmmcid01(M1D)
+IP Adress              : 10.202.62.70,10.202.62.90,10.202.60.101,10.202.60.90
+Location              : -
+Date of Activity  : 30/09/2025
+Detail Activity     : Support initiate backup hana plugin veeam for server M1D , M2D , M1P , M2P after finding issue credential user HANA.
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Running Backup Copy / Offsite Backup Commvault from storage AWS/S3 Bucket to Offsite storage Azure/Blob for last full backup September 2025 & retain job for 2 months.
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Commvault Backup
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 30/09/2025 To 01/09/2025
+Detail Activity     : Running Backup Copy / Offsite Backup Commvault from storage AWS/S3 Bucket to Offsite storage Azure/Blob for last full backup September 2025 & retain job for 2 months.
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Provide report backup server grams & realbit periode Januari 2023 s/d Juli 2025
+Category : Sysadmin - Backup
+Subcategory  : Reporting
+Item : Report Backup Veeam AWS
+Requester            : Tanu Bakti
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 1/10/2025 s/d 2/10/2025
+Detail Activity     : Provide report backup server grams & realbit periode Januari 2023 s/d Juli 2025 untuk kebutuhan Audit.
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Onsite Commvault) periode September 2025 
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Commvault
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 03/10/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Onsite Commvault) periode September 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Create Report Monthly Backup Appendix (Backup Offload / Backup Copy Commvault) periode September 2025
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Copy Commvault
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 03/10/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Offload / Backup Copy Commvault) periode September 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Veeam VBR Onprem) periode September 2025 
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Veeam Onpremise
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 03/10/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Veeam VBR Onprem)  periode September 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Veeam VBA AWS) periode September 2025 
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Veeam AWS
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 04/10/2025 - 05/10/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Veeam VBA AWS)  periode September 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Veeam VBA Azure) periode September 2025 
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Veeam Azure
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 04/10/2025 - 05/10/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Veeam VBA Azure)  periode September 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Grep Report Monthly Backup Veeam SAP HANA Plugin periode September 2025 
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Veeam Azure
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 04/10/2025
+Detail Activity     : Grep Report Monthly Backup Veeam SAP HANA Plugin periode September 2025 
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Remove hostname untuk keperluan rejoin domain , hostname : SML10-UN000890
+Category : Sysadmin - Active Directory
+Subcategory  : Delete
+Item : Computers
+Requester            : Gerry Nusah
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 7/10/2025
+Detail Activity     : Remove hostname untuk keperluan rejoin domain , hostname : SML10-UN000890
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Remove hostname untuk keperluan rejoin domain , hostname : SML10-UN000616
+Category : Sysadmin - Active Directory
+Subcategory  : Delete
+Item : Computers
+Requester            : Zikri
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 7/10/2025
+Detail Activity     : Remove hostname untuk keperluan rejoin domain , hostname : SML10-UN000616
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Trace email not delivered from sender External to recipinet Hans.Perdana@sinarmasland.com
+Category : Sysadmin M365
+Subcategory  : Troubleshoot
+Item : Exchange Online
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 7/10/2025
+Detail Activity     : Trace email not delivered from sender External to recipinet Hans.Perdana@sinarmasland.com
+Terima kasih
+
+Summary : Trace email not delivered to external email recipient
+Action : Open Exchange Admin portal > Trace mail based on Mail Flow based, filter by date/subject/sender/recipient
+Result : The trace mail result has been info to ITSM
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Unlock user AD Alex Haeroni
+Category : Sysadmin - Active Directory
+Subcategory : Change
+Item : Users
+Requester            : ITSM
+Technician           : Ramandita YP
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 8/10/2025
+Detail Activity     : Unlock user AD Alex Haeroni
+Terima kasih
+
+Summary : Request to Unlock user AD because of user locked due to policy 5 false attempt password
+Action : Unlock user AD from Active Directory (ADUC)
+Result : User has been Unlocked
+
+*Task Template*
+Unlock user AD :
+- Open Active Directory users & Computers
+- Find User > Unlock user AD
+
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Remove Certificate CA Old from GPO Default Domain Policy AD (CCF NO 9200-2025-DR-0000222 > 3000-2025-DR-0002335)
+Category : Sysadmin - Active Directory
+Subcategory : Change
+Item : Policy
+Requester            : Hery Tjandra
+Technician           : Ramandita YP
+VM Name            :  10.200.56.151
+IP Adress              : 10.200.56.151
+Location              : Onpremise
+Date of Activity  : 8/10/2025
+Detail Activity     : Remove Certificate CA Old from GPO Default Domain Policy AD
+Terima kasih
+
+Summary : Remove Certificate CA Old from GPO Default Domain Policy AD (CCF NO 9200-2025-DR-0000222 > 3000-2025-DR-0002335)
+Action : Remove Certificate CA Old from GPO Default Domain Policy AD
+Result : Old Certificate Self Sign CA (SML-CORP & SML-SUBCA) has been removed
+
+*Task Template*
+Remove Certificate CA Old from GPO Default Domain Policy AD :
+1. Before Execution - Backup VM AD (SMLMSADDSSVRAP1)
+2. Before Execution - Backup GPO Default Domain Policy
+3. Execution - Remove Old Certificate Self Sign CA (SML-CORP & SML-SUBCA) from GPO Default Domain Policy
+4. After - Create Documentation Before & After for CAT Teams
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Pengecekan akses admin AD user Teddy Tjendana
+Category : Sysadmin - Active Directory
+Subcategory : Troubleshoot
+Item : Users
+Requester            : Satriyo Wicaksono Jati
+Technician           : Ramandita YP
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 10/10/2025
+Detail Activity     : Pengecekan akses admin AD user Teddy Tjendana
+Terima kasih
+
+*Task Template*
+Pengecekan akses admin AD user :
+1. Open Server AD
+2. Find User on ADUC > Check group member user apakah masuk dalam group administrator AD atau tidak
+
+Summary : Pengecekan akses admin AD user Teddy Tjendana
+Action : Find User on ADUC > Check group member user apakah masuk dalam group administrator AD atau tidak
+Result : User Teddy Tjendana tidak masuk dalam member group administrator AD
+
+	
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create GPO Push Certificate Cisco SASE in AD SML
+Category : Sysadmin - Active Directory
+Subcategory : Add
+Item : Policy
+Requester            : Muhammad Risyad Fahlevi
+Technician           : Ramandita YP
+VM Name            :  SMLMSADDSSVRAP1
+IP Adress              : 10.200.56.151
+Location              : Onpremise
+Date of Activity  : 13/10/2025
+Detail Activity     : Create GPO Push Certificate Cisco SASE for All Computer users in AD SML
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Restore VM AWS HCCIP01 to VM ONPREMISE for restore point 10/10/2025
+Category : Sysadmin - Backup
+Subcategory  : Add
+Item : Veeam Restore AWS
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  HCCIP01
+IP Adress              : -
+Location              : AWS
+Date of Activity  : 13/10/2025
+Detail Activity     : Restore VM AWS HCCIP01 to VM ONPREMISE for restore point 10/10/2025 , Restore VM Onprem Name (HCCIPO1-New_Install-Restore_10102025)
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Backup (Veeam) for server SMLPSGGRRAPP03 (Grams Application) periode Aug 2024 To Aug 2025.
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Veeam AWS
+Requester            : Muhammad Alief Rizki
+Technician           : Ramandita
+VM Name            :  SMLPSGGRRAPP03
+IP Adress              : 10.202.59.139
+Location              : AWS
+Date of Activity  : 16/10/2025
+Detail Activity     : Create Report Backup (Veeam) for server SMLPSGGRRAPP03 (Grams Application) periode Aug 2024 To Aug 2025.
+Terima kasih
+
+Task Template :
+Create report Backup Veeam
+Description :
+Create report backup based on report monthly backup Veeam AWS (filter based on VM Name).
+
+Worklog :
+Discuss dengan Pak Muhammad Alief Rizki terkait permintaan report backup server Grams periode Agustus 2024 s/d Agustus 2025 , untuk keperluan Audit.
+Telah ditindaklanjuti dengan pembuatan report backup yang sudah dikirimkan sesuai request pada detail email .
+
+Resolution :
+Summary : Create Report Backup (Veeam) for server SMLPSGGRRAPP03 (Grams Application) periode Aug 2024 To Aug 2025.
+Action : Create repport backup veeam based on mohtly report (filter by vm name).
+Result : Report hase been send to requester (Muhammad Alief Rizki)
+
+=======================================================================================================================
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Backup (Veeam) for server SMLCTPASM2DBP01 (Realbit) periode Aug 2024 To Aug 2025.
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Veeam AWS
+Requester            : Muhammad Alief Rizki
+Technician           : Ramandita
+VM Name            :  SMLCTPASM2DBP01
+IP Adress              : 10.202.56.180
+Location              : AWS
+Date of Activity  : 16/10/2025
+Detail Activity     : Create Report Backup (Veeam) for server SMLCTPASM2DBP01 (Realbit) periode Aug 2024 To Aug 2025.
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Backup (Veeam) for server R3CIPJV15 (SAP ECC 760) periode Aug 2024 To Aug 2025.
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Veeam AWS
+Requester            : Muhammad Alief Rizki
+Technician           : Ramandita
+VM Name            :  R3CIPJV15
+IP Adress              : 10.202.62.145
+Location              : AWS
+Date of Activity  : 16/10/2025
+Detail Activity     : Create Report Backup (Veeam) for server R3CIPJV15 (SAP ECC 760) periode Aug 2024 To Aug 2025.
+Terima kasih
+
+================================================================================================
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Install(Upgrade) VMWare Tools 12.5.4 server VM Onpremise
+Category : Sysadmin - OnPremise
+Subcategory  : Add
+Item : Virtual Machine (VM)
+Requester            : Sudarsono Hadi Saputra
+Technician           : Ramandita
+VM Name            :  VM Onpremise (SMLMSADDSSVRAP1,SMLMSADDSSVRAP2,SMLMSCERTSVRAP2,SMLMSDirSyncAP1,backup-config,SMLPS2FSP01,smlmsveamvbrdp1,SMLMSVEAMONEDP1)
+IP Adress              : VM Onpremise (10.200.56.151,10.200.56.152,10.200.56.161,10.200.56.162,10.200.60.254,10.200.51.180,10.200.63.101,10.200.63.102)
+Location              : Onpremise
+Date of Activity  : 18/10/2025
+Detail Activity     : Install(Upgrade) VMWare Tools 12.5.4 server VM Onpremise (SMLMSADDSSVRAP1,SMLMSADDSSVRAP2,SMLMSCERTSVRAP2,SMLMSDirSyncAP1,backup-config,SMLPS2FSP01,smlmsveamvbrdp1,SMLMSVEAMONEDP1)
+Terima kasih
+
+Task Template : 
+Snapshot VM (Preventive) :
+> Open Vcenter Onprem > Snapshot VM before update vmware tools
+Install vmware tools :
+> Mount vmware tools 12.5.4 .iso > Installing the vmware tools
+
+Resolution :
+Summary : Install(Upgrade) VMWare Tools 12.5.4 server VM Onpremise berdasarkan temuan security oleh analis SOC CVE 
+CVE-2025-41244,CVE-2025-41245,CVE-2025-41246 (kerentanan yang meliputi local privilege escalation di VMware Aria/Tools (SDMP) yang dilaporkan dieksploitasi oleh UNC5174)
+Action : Upgrade VMWare Tools to version 12.5.4 on regarding onpremise VM
+Result : Update vmware tools done (for specific vm)
+
+
+==============================================================================================
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Clear log /mnt/vcb-storage on VBA Server (SMLLXVEAMVBAAP2 [10.202.63.20]) - Disk util/usage hit threshold
+Category : Sysadmin - Backup
+Subcategory  : Troubleshoot
+Item : Veeam Backup AWS
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name              : SMLLXVEAMVBAAP2
+IP Adress            : 10.202.62.20
+Location             : AWS
+Date of Activity     : 21/10/2025
+Detail Activity      : Clear log /mnt/vcb-storage on VBA Server (SMLLXVEAMVBAAP2 [10.202.63.20]) - Disk util/usage hit threshold
+Terima kasih
+
+Task Template :
+Clear log mnt/vcb-storage on VBA Server (SMLLXVEAMVBAAP2 [10.202.63.20]) 
+
+Summary : Disk util/usage /mnt/vcb-storage on VBA Server (SMLLXVEAMVBAAP2 [10.202.63.20]) hit threshold
+Action : Clear log /mnt/vcb-storage on VBA Server (SMLLXVEAMVBAAP2 [10.202.63.20])
+Result : After clear log veeam, the disk/partition / mount path is freed from 85% to 78% usage.
+
+
+=============================================================================================================
+
+Subject :Sysadmin SVR - Restore Server 
+Description :
+Dear Team ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Restore Server SMLMSAGENTAPP02 & R3MBRD02 - DEV - Membership Projects - Development 02
+Category : Sysadmin - Backup
+Subcategory  : Add
+Item : Veeam Restore OnPremise
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            : SMLMSAGENTAPP02 & R3MBRD02 - DEV - Membership Projects - Development 02
+IP Address              : -
+Location              : OnPremise
+Date of Activity  : 21/10/2025
+Detail Activity     : Restore server SMLMSAGENTAPP02 & R3MBRD02 - DEV - Membership Projects - Development 02 , restore point 23092025 dari AWS ke OnPremise kebutuhan CAT 3000-2025-DR-0002311 Decomm database sql PaaS
+
+Task Template :
+Restore VM Cloud to Onprem (Veeam) :
+1. Open Veeam VBR
+2. Find backup VM Cloud (AWS or Azure) on External Repository
+3. Instant Recovery
+4. Quick Migration
+5. Test Power ON Server
+
+Summary : Restore VM Cloud to Onpremise VMWARE (Veeam) - kebutuhan CAT 28 October 3300-2025-DR-0000034 | Testing restore Dizpro SMLHRTADPCDBP01 10.202.59.76
+Action : Restore VM Cloud to Onprem (Veeam)
+Result : VM Has been restore to VMWare Onprem
+
+
+Subject :Sysadmin SVR - RRestore Server Dizpro to VM Onprem restore point 02112025
+Description :
+Dear Team ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Restore Server Dizpro to VM Onprem restore point 02112025
+Category : Sysadmin - Backup
+Subcategory  : Add
+Item : Veeam Restore OnPremise
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            : SMLHRTADPCDBP01
+IP Address              : -
+Location              : OnPremise
+Date of Activity  : 3/11/2025
+Detail Activity     : Restore server , restore point 02112025 dari AWS ke OnPremise as request CAT 28 October 3300-2025-DR-0000034 | Testing restore Dizpro SMLHRTADPCDBP01 10.202.59.76
+
+
+=================================================
+*Category :*
+Sysadmin - Backup
+
+*SubCategory :*
+Add
+Change
+Delete
+Move
+Project Support
+Reporting
+
+*Items :*
+Commvault Backup
+Commvault Restore
+Veeam Backup AWS
+Veeam Backup Azure
+Veeam Backup OnPremise
+Veeam Restore AWS
+Veeam Restore Azure
+Veeam Restore OnPremise
+
+
+===================================================
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Backup (Veeam) for server SMLHRTADPCDBP01 (AJB) periode January 2024 To September 2025.
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Veeam AWS
+Requester            : Muhammad Alief Rizki
+Technician           : Ramandita
+VM Name            :  SMLHRTADPCDBP01
+IP Adress              : 10.202.59.76
+Location              : AWS
+Date of Activity  : 23/10/2025
+Detail Activity     : Create Report Backup (Veeam) for server SMLHRTADPCDBP01 (AJB) periode January 2024 To September 2025.
+Terima kasih
+
+Task Template :
+Create report Backup Veeam
+Description :
+Create report backup based on report monthly backup Veeam AWS (filter based on VM Name).
+
+Resolution :
+Summary : Create Report Backup for server SMLHRTADPCDBP01 (AJB) periode January 2024 To September 2025.
+Action : Create repport backup (Veeam) & (Commvault) based on mohtly report (filter by vm name).
+Result : Report hase been send to requester (Muhammad Alief Rizki)
+
+
+
+================================================
+
+
+Backup HANA DB & Log server SAP HANA R3CID01 failed since 23 Oct 2025, after being traced there was a failed out of memory.
+After being confirmed with the AWS Team, from the SSM side there were no issues or memory alerts, then the sysadmin informed and confirmed with the owner, and the server owner (Anton Wijaya) informed that tuning would be carried out.
+After the VM was tuned and rebooted, Retry backup was successful again.
+
+
+===============================================
+
+Dear Tim @soc ,
+Mohon bantuannya untuk open port ssh 22 temporary one way 
+From source : Veeam VBR Onprem 10.200.63.101
+To Destination :
+R3CIV01 [10.202.62.188]
+R3CIP03 [10.202.62.86]
+R3CID01 [10.202.60.60]
+R3CIQ01 [10.202.50.61]
+R3CID03 [10.202.60.86]
+PCCIPV1 [10.202.62.121]
+PCCIDV1 [10.202.60.111]
+SMLSMMCIP01 [10.202.62.90]
+SMLSMMCID01 [10.202.60.90]
+SMLSMMHCP01 [10.202.62.70]
+SMLSMMHCD01 [10.202.60.101]
+
+Untuk kebutuhan pengecekan plugin backup SAP HANA from VBR server. 
+
+
+https://10.202.63.130/b841d290-7ba0-49a0-a6a8-d9e080187d04/?token=eyJhbGciOiJSUzUxMiIsImtpZCI6IjI5MjUzNkQzQzUzREYyQjEzQkJFNDcyM0Y4NTMwODJFNzgzN0Y5NzAiLCJ0eXAiOiJKV1QifQ.eyJ1bmlxdWVfbmFtZSI6InZlZWFtYXdzIiwic2Vzc2lvbl9pZCI6ImI4NDFkMjkwLTdiYTAtNDlhMC1hNmE4LWQ5ZTA4MDE4N2QwNCIsIm5iZiI6MTc2MTYzNzkxMSwiZXhwIjoxNzYxNjQxNTExLCJpYXQiOjE3NjE2Mzc5MTEsImF1ZCI6IndvcmtlciJ9.Ah2KLOtkLR8vkA_4AHkXb9mt8_A1ib_DA_0oPv6AoiHai3nZ2X1ZcDdfMJSzEvo50v6RUIxjCZejpQI0BeEIx9DWKE36VgE444BfYdZ008JbacrVjMVbWsZIud7oB5f72oszfEg2iPGXD1KeiXmD8iY4RLkK6J909GayOw9LeHcO0GZVLBYSt6tD5BfhO6Jl3knixNBVylHGIHHHfqy-oGTC0_Gjl8EpvKlkdEytsJyUcNj7BJm5BTPdAky0ifwaJPUHEEYLilPJJTmDfyQ5dZZi9mzhfP944qa5L67VjcZnJQA0hFNu4gqO0GQ9ve7PudCtu7e5a7qpQNZ0jtCOag
+
+
+  
+
+
+Description :
+Dear Team ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Restore Volume / disk server SMLNETAPP01
+Category : Sysadmin - Backup
+Subcategory  : Add
+Item : Veeam Restore AWS
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            : SMLNETAPP01
+IP Address              : -
+Location              : AWS
+Date of Activity  : 28/10/2025
+Detail Activity     : Sysadmin SVR - Restore Volume / disk D server SMLNETAPP01 to server SMLHRTADPCDBP01, restore point 27092025.
+
+Task Template :
+Restore Volume disk from Veeam AWS :
+1. Open Veeam VBA AWS Web Gui
+2. Find server 
+3. Restore Volume
+4. Set Restore Point
+5. After Volume restore done, info to Team AWS for attach to specific VM as user's Request
+
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Install(Update) VMWare Tools to version 12.5.4 server smlmscertsvrap1
+Category : Sysadmin - OnPremise
+Subcategory  : Add
+Item : Virtual Machine (VM)
+Requester            : Sudarsono Hadi Saputra
+Technician           : Ramandita
+VM Name            :  smlmscertsvrap1
+IP Adress              : 10.200.56.160
+Location              : Onpremise
+Date of Activity  : 28/10/2025
+Detail Activity     : Install(Update) VMWare Tools to version 12.5.4 server smlmscertsvrap1
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Trace user AD locked a.n user Putu.Pranata@sinarmasland.com
+Category : Sysadmin - Active Directory
+Subcategory  : Troubleshoot
+Item : Users
+Requester            : ITSM
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 29/10/2025
+Detail Activity     : Trace user AD locked a.n user Putu.Pranata@sinarmasland.com
+Terima kasih
+
+Task Template :
+Title : Trace user AD locked on AD
+Description : Open Event Viewer on Server AD > Find event viewer id 4740 user locked
+
+Summary : Trace user AD locked on AD user Putu.Pranata@sinarmasland.com
+Action : Trace user AD locked on Event viewer server AD
+Results : User locked from computername SMLWAUAPP01
+
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Support troubleshooting issue Device TPM Error Notebook
+Category : Sysadmin - Windows
+Subcategory  : Troubleshoot
+Item : Windows_Client
+Requester            : Victor Simon
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 29/10/2025
+Detail Activity     : Support troubleshooting issue Device TPM Error Notebook
+Terima kasih
+
+Task Template :
+Title : Support troubleshooting issue Device TPM after user change password AD user
+Description : Suggest user victor simon for running gpupdate /force on his endpoint notebook
+
+Worklog : Support troubleshooting issue Device TPM after user change password AD user
+
+Summary : Support troubleshooting issue Device TPM Error Notebook
+Action : Suggest user victor simon for running gpupdate /force on his endpoint notebook
+Results : Error warning Device TPM Error not shown again.
+
+r3cip03.sinarmasland.net [10.202.62.86] / H2P
+r3cid03.sinarmasland.net [10.202.60.86] / H2D
+
+
+============================================================================================
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Running Backup Copy / Offsite Backup Commvault from storage AWS/S3 Bucket to Offsite storage Azure/Blob for last full backup Oktober 2025 & retain job for 2 months.
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Commvault Backup
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 31/10/2025
+Detail Activity     : Running Backup Copy / Offsite Backup Commvault from storage AWS/S3 Bucket to Offsite storage Azure/Blob for last full backup Oktober 2025 & retain job for 2 months.
+Terima kasih
+
+*Task Template*
+Running Backup Copy Commvault
+1. Running Backup Copy Commvault from storage policy / bucket AWS S3 To Azure/Blob
+2. Set retention to 2 month (Until 26/Dec/2025)
+
+Summary : Running Backup Copy / Offsite Backup Commvault from storage AWS/S3 Bucket to Offsite storage Azure/Blob
+Action : Running Auxiliary Copy Job in Storage Policy AWS Database (AWS/S3) to Storage Azure Blob & Set retention until 2 month (25/Dec/2025)
+Result : Backup data has been copied to Offsite Storage.
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Onsite Commvault) periode Oktober 2025 
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Commvault
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 01/11/2025 - 02/11/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Onsite Commvault) periode Oktober 2025
+Terima kasih
+
+*Task Template*
+Create Monthly report backup commvault 
+Create Report backup from data backup commvault periode 1-31 Oct 2025
+
+Summary : Create Report Monthly Backup Appendix (Backup Onsite Commvault) periode Oktober 2025
+Action : Create Report backup from data backup commvault periode 1-31 Oct 2025
+Result : Report has been created & upload on Appendix monthly report SML
+
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR : Create Report Monthly Backup Appendix (Backup Offload / Backup Copy Commvault) periode Oktober 2025
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Copy Commvault
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 01/11/2025 - 02/11/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Offload / Backup Copy Commvault) periode Oktober 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Veeam VBR Onprem) periode Oktober 2025 
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Veeam Onpremise
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 01/11/2025 - 03/11/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Veeam VBR Onprem)  periode Oktober 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Veeam VBA AWS) periode Oktober 2025 
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Veeam AWS
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 01/11/2025 - 03/11/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Veeam VBA AWS)  periode Oktober 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Veeam VBA Azure) periode Oktober 2025 
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Veeam Azure
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 01/11/2025 - 03/11/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Veeam VBA Azure)  periode Oktober 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Grep Report Monthly Backup Veeam SAP HANA Plugin periode Oktober 2025 
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Veeam OnPremise
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 05/11/2025
+Detail Activity     : Grep Report Monthly Backup Veeam SAP HANA Plugin periode Oktober 2025 
+Terima kasih
+
+*Task Template*
+Create Monthly report backup Veeam Onprem/Azure/AWS
+Create Report backup from data Backup Veeam Onprem/Azure/AWS periode 1-31 Oct 2025
+
+Summary : Create Report Monthly Backup Appendix (Backup Onsite Veeam Onprem/Azure/AWS) periode Oktober 2025
+Action : Create Report backup from data backup (Backup Onsite Veeam Onprem/Azure/AWS) periode 1-31 Oct 2025
+Result : Report has been created & upload on Appendix monthly report SML
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Resize / Expand Volume Drive E: server Purebackup 10.200.51.18 from Purestorage Volume (15 TB to 20 TB)
+Category : Sysadmin Purestorage
+Subcategory  : Change
+Item : -
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  SMLPS2FSP01
+IP Adress              : 10.200.51.180
+Location              : Onpremise
+Date of Activity  : 05/11/2025
+Detail Activity     : Resize / Expand Volume Drive E: server Purebackup 10.200.51.18 from Purestorage Volume (15 TB to 20 TB)
+Terima kasih
+
+=============================================================================
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Grep & Send list user member of Group Entra AD Printix_Color & Printix_Color_(NEW)
+Category : Sysadmin - Microsoft - Entra ID
+Subcategory  : Project Support
+Item : Users
+Requester            : Sudarsono Hadi Saputra
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 13/11/2025
+Detail Activity     : Grep & Send list user member of Group Entra AD Printix_Color & Printix_Color_(NEW)
+Terima kasih
+
+*Task Template*
+Judul : Grep & Send list user member of Group Entra AD
+Deskripsi : Entra Id Group > Bulk Action Export member group
+
+Summary : Grep & Send list user member of Group Entra AD Printix_Color & Printix_Color_(NEW)
+Action : Entra Id Group > Bulk Action Export member group > Send by email to Pak Putra
+Result : list member group Printix Color has been sent.
+
+==============================================================================
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Troubleshooting & retry backup failed veeam server SMLMSVEAMONEDP1
+Category : Sysadmin - Veeam - Backup & Replication
+Subcategory  : Troubleshoot
+Item : Veeam Backup OnPremise
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  SMLMSVEAMONEDP1
+IP Adress              : 10.200.63.102
+Location              : OnPremise
+Date of Activity  : 16/11/2025
+Detail Activity     : Troubleshooting & retry backup failed veeam server SMLMSVEAMONEDP1
+Terima kasih
+
+*Task Template*
+Judul : Troubleshooting & retry backup failed veeam server SMLMSVEAMONEDP1
+Deskripsi : Troubleshooting & retry backup failed veeam server SMLMSVEAMONEDP1
+           1. View status backup / report failed backup
+           2. failed backup because of Error: Failed to call RPC function 'Vss.Unfreeze': Error code: 0x80004005		 
+           3. Restart vss service windows 
+           4. Free up disk space drive D: (Full)
+           5. Retry Backup 
+           6. Retry Backup Successful		   
+
+Summary : Troubleshooting & retry backup failed veeam server SMLMSVEAMONEDP1
+Action : View report failed backup > Restart VSS Service windows > Free up disk space (D:) > Retry Backup on veeam
+Result : Retry Backup Successful
+
+
+=================================================================================
+
+
+Subject :Sysadmin SVR - Restore vm onprem SMLMSADLOGERAP1 to datastore pure storage (DS-VMDELETE) , restore point 16-Nov-2025 & Remove from backup veeam
+Description :
+Dear Team ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Restore vm onprem SMLMSADLOGERAP1 to datastore pure storage (DS-VMDELETE) , restore point 16-Nov-2025 & Remove from backup veeam
+Category : Sysadmin - Backup
+Subcategory  : Add
+Item : Veeam Restore Onpremise
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            : SMLMSADLOGERAP1
+IP Address              : 10.200.56.66
+Location              : OnPremise
+Date of Activity  : 3/11/2025
+Detail Activity     : Restore vm onprem SMLMSADLOGERAP1 to datastore pure storage (DS-VMDELETE) , restore point 16-Nov-2025 & Remove from backup veeam
+
+
+Subject :Sysadmin SVR - Restore vm Azure SMLLXPOCAXONAD1 to VM Onpremise
+Description :
+Dear Team ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Restore vm Azure SMLLXPOCAXONAD1 to VM Onpremise
+Category : Sysadmin - Backup
+Subcategory  : Add
+Item : Veeam Restore Azure
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            : SMLLXPOCAXONAD1
+IP Address              : 10.207.2.210
+Location              : Azure
+Date of Activity  : 3/11/2025
+Detail Activity     : Restore vm Azure SMLLXPOCAXONAD1 to VM Onpremise
+
+=================================================================================
+
+Subject :Sysadmin SVR - Move Hostname / PC (SML11-UD000088,SML11-UD000037,SML11-UN000042) keluar dari OU Tier2 untuk keperluan share printer
+
+Dear Team ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Move Hostname / PC (SML11-UD000088,SML11-UD000037,SML11-UN000042) keluar dari OU Tier2 untuk keperluan share printer
+Category : Sysadmin - Windows - Active Directory
+Subcategory  : Move
+Item : Computers
+Requester            : Fauzan
+Technician           : Ramandita
+VM Name            : -
+IP Address              : -
+Location              : Kota Wisata
+Date of Activity  : 20/11/2025
+Detail Activity     : Move Hostname / PC (SML11-UD000088,SML11-UD000037,SML11-UN000042) keluar dari OU Tier2 untuk keperluan share printer , agar tidak terkena GPO Security Baseline.
+
+Terima kasih.
+
+
+Task :
+Title : Move Hostname / PC From AD OU Tier2
+Description : Move Hostname / PC (SML11-UD000088,SML11-UD000037,SML11-UN000042) keluar dari OU Tier2 move from OU: sinarmasland.net/Tier/Tier 2/Workstations/WSUS-Downstream/KotaWisat to OU: sinarmasland.net/Computers-SML/Clients/Computer_Using_Share di Active Directory Users and Computers
+
+
+Summary : Move Hostname / PC keluar dari OU Tier2 Kebutuhan untuk akses shared folder /printer after penerapan security baseline GPO AD revamp
+Action : Move Hostname / PC (SML11-UD000088,SML11-UD000037,SML11-UN000042) keluar dari OU Tier2 move from OU: sinarmasland.net/Tier/Tier 2/Workstations/WSUS-Downstream/KotaWisat to OU: sinarmasland.net/Computers-SML/Clients/Computer_Using_Share di Active Directory Users and Computers
+Result : Hostname (SML11-UD000088,SML11-UD000037,SML11-UN000042) sudah bisa akses share printer.
+
+
+=====================================================
+
+sml11-un000031
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Remove hostname untuk keperluan rejoin domain , hostname : sml11-un000027
+Category : Sysadmin - Active Directory
+Subcategory  : Delete
+Item : Computers
+Requester            : Fauzan
+Technician           : Ramandita
+VM Name            :  sml11-un000027
+IP Adress              : -
+Location              : -
+Date of Activity  : 11/26/2025
+Detail Activity     : Remove hostname untuk keperluan rejoin domain , hostname : sml11-un000027
+Terima kasih
+
+Summary : Remove Hostname for rejoin domain AD sinarmasland.net
+Action : Remove Hostname (Computer) as request on Active Directory Users and Computers
+Result : Computer has been remove from ADUC
+
+Task : Remove Hostname for rejoin domain AD sinarmasland.net
+Description : 
+1. Open Server AD (ADUC)
+2. Find Computer / Hostname (ADUC)
+3. Delete Computer / hostname per request
+
+=====================================================================
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Testing / Lab create alternate UPN Suffix on AD & Testing user's login or impact after change New Alt UPN Suffix.
+Category : Sysadmin - Windows - Active Directory
+Subcategory  : Project Support
+Item : Users
+Requester            : Dimas Firmantoro
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 11/24/2025
+Detail Activity     : Testing / Lab create alternate UPN Suffix on AD & Testing user's login or impact after change New Alt UPN Suffix (For Support Project CASB).
+Terima kasih
+
+Task : Testing / Lab create alternate UPN Suffix on AD (LAB).
+
+LAB Testing :
+1. Create alternative UPN Suffix (LAB)
+2. Change Exisitng User's UPN to New UPN Suffix (LAB)
+3. Testing Login with new UPN & SAM Format (Domain/Users) (LAB)
+4. Create Documentation
+
+Testing alternate UPN Suffix on AD Production (sinarmasland.net) for 1 testing user :
+
+AD SML Testing :
+1. Change Exisitng User's UPN to New UPN Suffix (it.testing2@sinarmasland.com To it.testing2@bpw.sinarmasland.com)
+2. Testing Login with new UPN & SAM Format (Domain/Users) & Old UPN
+3. Testing Login Entra with new UPN  & Old UPN
+4. Create Documentation
+
+
+Summary : Ada kebutuhan dari project CASB , PIC Pak Dimas, untuk create alternative UPN Suffix di AD Onprem (@ssw.sinarmasland.com) untuk menjembatani beberapa user di Entra agar dapat sign in ke 365 via ADFS & CASB. 
+Action : Testing / Lab create alternate UPN Suffix on AD & Testing user's login or impact after change New Alt UPN Suffix.
+Result : 
+Kesimpulannya bila UPN Suffix diubah :
+1. User masih bisa login di Hostname PC Jodom (existing profile) dengan menggunakan format UPN Suffix baru , 
+Primary UPN Suffix atau SAM (Domain\user)
+2. Untuk login di Entra Profile menggunakan new UPN Suffix
+
+==============================================================================
+
+Subject :Sysadmin SVR - Move Hostname / PC Sml11-un000040 keluar dari OU Tier2 untuk keperluan share printer
+
+Dear Team ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Move Hostname / PC Sml11-un000040 keluar dari OU Tier2 untuk keperluan share printer
+Category : Sysadmin - Windows - Active Directory
+Subcategory  : Move
+Item : Computers
+Requester            : Fauzan
+Technician           : Ramandita
+VM Name            : -
+IP Address              : -
+Location              : Kota Wisata
+Date of Activity  : 27/11/2025
+Detail Activity     : Move Hostname / PC Sml11-un000040 keluar dari OU Tier2 untuk keperluan share printer , agar tidak terapply GPO Security Baseline.
+
+Terima kasih.
+
+
+Task :
+Title : Move Hostname / PC From AD OU Tier2
+Description : Move Hostname / PC Sml11-un000040 keluar dari OU Tier2 move from OU:  sinarmasland.net/Tier/Tier 2/Workstations/WSUS-Downstream/KotaWisata to OU: sinarmasland.net/Computers-SML/Clients/Computer_Using_Share di Active Directory Users and Computers
+
+Summary : Move Hostname / PC keluar dari OU Tier2 Kebutuhan untuk akses shared folder /printer after penerapan security baseline GPO AD revamp
+Action : Move Hostname / PC SML11-UN000040 keluar dari OU Tier2 move from OU:  sinarmasland.net/Tier/Tier 2/Workstations/WSUS-Downstream/KotaWisata to OU: sinarmasland.net/Computers-SML/Clients/Computer_Using_Share di Active Directory Users and Computers
+Result : PC Hostname Sml11-un000040 sudah bisa akses share printer.
+
+========================================================================
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Add New Alternative UPN Suffix (ssw.sinarmasland.com) di AD Domain & Trust sinarmasland.net
+Category : Sysadmin - Windows - Active Directory
+Subcategory  : Project Support
+Item : Not Assigned
+Requester            : Dimas Firmantoro
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 11/27/2025
+Detail Activity     : Add New Alternative UPN Suffix (ssw.sinarmasland.com) di AD Domain & Trust sinarmasland.net
+Terima kasih
+
+========================================================================
+
+Subject :Sysadmin SVR - (Join Teams) Activity Upgrade NetAPP Ontapp Version from 9.14.1P2 to 9.16.1.P9
+Description :
+Dear Team ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - (Join Teams) Activity Upgrade NetAPP Ontapp Version from 9.14.1P2 to 9.16.1.P9
+Category : Sysadmin - NetAPP - Storage
+Subcategory  : Change
+Item : OS
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            : SMLNTPPCLP-01 , SMLNTPPCLP-02
+IP Address              :
+Location              : OnPremise
+Date of Activity  : 28/11/2025
+Detail Activity     : (Join Teams) Activity Upgrade NetAPP Ontapp Version from 9.14.1P2 to 9.16.1.P9
+Terima kasih
+
+
+=============================================================================
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Running Backup Copy / Offsite Backup Commvault from storage AWS/S3 Bucket to Offsite storage Azure/Blob for last full backup November 2025 & retain job for 2 months.
+Category : Sysadmin Backup
+Subcategory  : Project Support
+Item : Commvault Backup
+Requester            : Hery Tjandra
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 1/12/2025
+Detail Activity     : Running Backup Copy / Offsite Backup Commvault from storage AWS/S3 Bucket to Offsite storage Azure/Blob for last full backup November 2025 & retain job for 2 months.
+Terima kasih
+
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Onsite Commvault) periode November 2025 
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Commvault
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 1/12/2025 - 2/12/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Onsite Commvault) periode November 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Offload / Backup Copy Commvault) periode November 2025
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Copy Commvault
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 1/12/2025 - 2/12/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Offload / Backup Copy Commvault) periode November 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Veeam VBR Onprem) periode November 2025 
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Veeam Onpremise
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 1/12/2025 - 2/12/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Veeam VBR Onprem)  periode November 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Veeam VBA AWS) periode November 2025 
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Veeam AWS
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 1/12/2025 - 2/12/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Veeam VBA AWS)  periode November 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Create Report Monthly Backup Appendix (Backup Veeam VBA Azure) periode November 2025 
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Veeam Azure
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 1/12/2025 - 2/12/2025
+Detail Activity     : Create Report Monthly Backup Appendix (Backup Veeam VBA Azure)  periode November 2025
+Terima kasih
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Grep Report Monthly Backup Veeam SAP HANA Plugin periode November 2025 
+Category : Sysadmin Backup
+Subcategory  : Reporting
+Item : Report Backup Veeam Azure
+Requester            : Afan Therik
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 1/12/2025 - 2/12/2025
+Detail Activity     : Grep Report Monthly Backup Veeam SAP HANA Plugin periode November 2025 
+Terima kasih
+
+*Task Template*
+Create Monthly report backup commvault 
+Create Report backup from data backup commvault periode 1-30 November 2025
+
+Summary : Create Report Monthly Backup Appendix (Backup Onsite Commvault) periode November 2025
+Action : Create Report backup from data backup commvault periode 1-30 November 2025
+Result : Report has been created & upload on Appendix monthly report SML
+
+
+Task Template*
+Create Monthly report backup Veeam Onprem/Azure/AWS/SAPHANA
+Create Report backup from data Backup Veeam Onprem/Azure/AWS/SAPHANA periode 1-30 November 2025
+
+Summary : Create Report Monthly Backup Appendix (Backup Onsite Veeam Onprem/Azure/AWS/SAPHANA) periode November 2025
+Action : Create Report backup from data backup (Backup Onsite Veeam Onprem/Azure/AWS/SAPHANA) periode 1-30 Nov 2025
+Result : Report has been created & upload on Appendix monthly report SML
+
+
+===============================================================================
+
+Dear ITSM mohon dapat dibuatkan ticket SVR dengan detail sebagai berikut :
+Subject : Sysadmin SVR - Grep list user AD SML yang kolom attribute emailnya terdapat value suffix @ssw.sinarmasland.com 
+Category : Sysadmin - Windows - Active Directory
+Subcategory  : Project Support
+Item : Users
+Requester            : Dimas Firmantoro
+Technician           : Ramandita
+VM Name            :  -
+IP Adress              : -
+Location              : -
+Date of Activity  : 12/5/2025
+Detail Activity     : Grep list user AD SML yang kolom attribute emailnya terdapat value suffix @ssw.sinarmasland.com 
+Terima kasih
+
